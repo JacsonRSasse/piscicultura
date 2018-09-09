@@ -1,0 +1,24 @@
+body {
+    background-color: #f4f4f4;
+    font-size: 14px;
+    font-family: Roboto,sans-serif;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (min-width: 993px) {
+    header.navbar_fixa {
+        padding-left: 300px;
+    }
+    main div.time_line {
+        padding-left: 310px;
+        padding-right: 10px;
+        padding-top: 20px;
+    }
+}
+
+.card-perfil {
+    width: 450px; 
+}
+    
