@@ -5875,7 +5875,7 @@ body.keyboard-focused .dropdown-content li:focus {
 }
 
 .keyboard-focused .collapsible-header:focus {
-  background-color: #eee;
+  /*background-color: #eee;*/
 }
 
 .collapsible-body {
@@ -5900,7 +5900,7 @@ body.keyboard-focused .dropdown-content li:focus {
 
 .sidenav .collapsible-header,
 .sidenav.fixed .collapsible-header {
-  background-color: transparent;
+  /*background-color: transparent;*/
   border: none;
   line-height: inherit;
   height: inherit;

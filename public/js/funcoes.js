@@ -1,3 +1,9 @@
+$(document).ready(function() {
+    $('.collapsible').collapsible();
+    $('#example').DataTable();
+    $('select').formSelect();
+});
+
 $( function() {
     $( ".draggable" ).draggable();
 } );
