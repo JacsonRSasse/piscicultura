@@ -5858,7 +5858,7 @@ body.keyboard-focused .dropdown-content li:focus {
   -webkit-tap-highlight-color: transparent;
   line-height: 1.5;
   padding: 1rem;
-  background-color: #fff;
+  /*background-color: #fff;*/
   border-bottom: 1px solid #ddd;
 }
 
@@ -5920,7 +5920,7 @@ body.keyboard-focused .dropdown-content li:focus {
 .sidenav .collapsible-body,
 .sidenav.fixed .collapsible-body {
   border: 0;
-  background-color: #fff;
+  /*background-color: #fff;*/
 }
 
 .sidenav .collapsible-body li a,

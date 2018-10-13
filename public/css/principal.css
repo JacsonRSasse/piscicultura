@@ -1,5 +1,5 @@
 body {
-    /*background-color: #f4f4f4;*/
+    background-color: #f4f4f4;
     font-size: 14px;
     font-family: Roboto,sans-serif;
     min-height: 100%;
@@ -40,17 +40,9 @@ body {
     border-bottom: 1px solid rgba(0,0,0,0.5);
 }
 
-.sidenav li > a, .sidenav .collapsible-header, .sidenav.fixed .collapsible-header, .collapsible-header:focus {
-    background-color: #0091ea;
-}
-
-.sidenav .collapsible-body{
+/*.sidenav .collapsible-body, .sidenav .active {
     background-color: #0083D3;
-}
-
-.sidenav .collapsible-body:hover{
-    background-color: rgba(0,0,0,0.2);
-}
+}*/
 
 .sidenav li a{
     position: relative;
