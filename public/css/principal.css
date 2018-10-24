@@ -97,3 +97,41 @@ li {
     padding-right: 18px;
 }
 
+.area_botoes_paginacao {
+    display: block;
+    padding-bottom: 2px;
+    position: relative;
+    float: right;
+}
+
+input:not([type]):focus:not([readonly]){
+    border-bottom: 1px solid #0091ea;
+}
+
+.area_filtro {
+    width: 250px;
+    float: right;
+}
+
+.area_label_cont, .area_botoes_acoes{
+    clear: both;
+    float: left;
+    padding-top: 1.2em;
+    padding-left: 0.5em;
+}
+
+.pagination li.active{
+    background-color: #0091ea;
+}
+
+.btn-small {
+    background-color: #0091ea;
+    height: 25px;
+    line-height: 25px;
+    font-size: 11px;
+    margin-left: -4px;
+}
+
+.btn-small:hover  {
+    background-color: #0091ea;
+}

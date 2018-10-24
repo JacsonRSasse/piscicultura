@@ -5,14 +5,13 @@
         <group>
             <file>file:/C:/xampp/htdocs/piscicultura/public/js/funcoes.js</file>
             <file>file:/C:/xampp/htdocs/piscicultura/public/css/principal.css</file>
-            <file>file:/C:/xampp/htdocs/piscicultura/app/Http/Controllers/Controller.php</file>
-            <file>file:/C:/xampp/htdocs/piscicultura/resources/views/pagina_teste.blade.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/public/css/materialize.css</file>
+            <file>file:/C:/xampp/htdocs/piscicultura/resources/views/produtor/alugar_equipamento.blade.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/app/Http/Controllers/ControllerProdutor.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/resources/views/base/corpo_pagina.blade.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/routes/web.php</file>
+            <file>file:/C:/xampp/htdocs/piscicultura/public/js/datatables.js</file>
             <file>file:/C:/xampp/htdocs/piscicultura/resources/views/base/navbar_padrao.blade.php</file>
-            <file>file:/C:/xampp/htdocs/piscicultura/resources/views/produtor/index_produtor.blade.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/resources/views/produtor/vender_producao.blade.php</file>
         </group>
     </open-files>

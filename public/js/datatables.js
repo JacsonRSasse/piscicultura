@@ -11450,7 +11450,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No data available in table",
+			"sEmptyTable": "Sem resultados",
 	
 	
 			/**
@@ -11482,7 +11482,8 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Exibindo _START_ até _END_ de _TOTAL_ registros",
+//			"sInfo": "Exibindo _START_ até _END_ de _TOTAL_ registros",
+			"sInfo": "Exibindo _END_ de _TOTAL_ registros",
 	
 	
 			/**
@@ -11503,7 +11504,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
+			"sInfoEmpty": "Exibindo 0 de 0 registros",
 	
 	
 			/**

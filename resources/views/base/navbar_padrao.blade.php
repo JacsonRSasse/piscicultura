@@ -13,13 +13,13 @@
         <li class="">
             <ul class="collapsible">            
             @foreach($aItensMenu as $oItem)
-                <li class="waves-effect">
+                <li class="waves-effect {{$oItem->active ? ' active' : ''}}">
                     <a class="collapsible-header"><i class="material-icons chevron">chevron_left</i>{{$oItem->header}}</a>
                     @if(count($oItem->itens))
                     <div class="collapsible-body">
                         @foreach($oItem->itens as $item)
                         <ul>
-                            <li><a id="{{$item->id}}" href="{{$item->link}}" class="waves-effect item-corpo">{{$item->descricao}}</a></li>
+                            <li><a href="{{$item->link}}" class="waves-effect item-corpo {{$item->class}}">{{$item->descricao}}</a></li>
                         </ul>
                         @endforeach
                     </div>
