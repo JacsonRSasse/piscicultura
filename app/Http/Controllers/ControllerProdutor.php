@@ -27,8 +27,8 @@ class ControllerProdutor extends Controller
     private function getMenuManutencao(){
         $oItem = $this->getObjetoMenuPadrao('Manutenção');
         $aItensAndLinks = [
-            [route('venderProducao')   , 'Vender Produção'   , self::PAG_VENDER_PRODUCAO   , ''],
             [route('alugarEquipamento'), 'Alugar Equipamento', self::PAG_ALUGAR_EQUIPAMENTO, ''],
+            [route('venderProducao')   , 'Vender Produção'   , self::PAG_VENDER_PRODUCAO   , ''],
         ];
         foreach ($aItensAndLinks as $aItem){
             $oItemItem = new \stdClass();
@@ -91,7 +91,7 @@ class ControllerProdutor extends Controller
     public function getIndexProdutor(){
         $aItensMenu = $this->getItensMenu();
         $oUsuario = new \stdClass();
-        $oUsuario->nome = 'Jacson';
+        $oUsuario->nome = 'Nome do Usuário';
         return view('produtor.index_produtor', compact('aItensMenu', 'oUsuario'));
     }
     
@@ -99,7 +99,7 @@ class ControllerProdutor extends Controller
         $aItensMenu = $this->getItensMenu();
         $this->setPaginaAtiva($aItensMenu, self::PAG_VENDER_PRODUCAO);
         $oUsuario = new \stdClass();
-        $oUsuario->nome = 'Jacson';
+        $oUsuario->nome = 'Nome do Usuário';
         return view('produtor.vender_producao', compact('aItensMenu', 'oUsuario'));
     }
     
@@ -107,7 +107,7 @@ class ControllerProdutor extends Controller
         $aItensMenu = $this->getItensMenu();
         $this->setPaginaAtiva($aItensMenu, self::PAG_ALUGAR_EQUIPAMENTO);
         $oUsuario = new \stdClass();
-        $oUsuario->nome = 'Jacson';
+        $oUsuario->nome = 'Nome do Usuário';
                 
         return view('produtor.alugar_equipamento', compact('aItensMenu', 'oUsuario'));
     }

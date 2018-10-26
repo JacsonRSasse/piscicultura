@@ -88,20 +88,56 @@ li {
     font-size: 38px;
 }
 
-.dataTables_wrapper {
-    border-top: 1px solid rgba(0,0,0,0.12);
-    border-bottom: 1px solid rgba(0,0,0,0.12);
+[type="checkbox"] + span:not(.lever):before, [type="checkbox"]:not(.filled-in) + span:not(.lever):after,
+[type="checkbox"] + span:not(.lever):before, [type="checkbox"]:not(.filled-in) + span:not(.lever):after{
+    width: 13px;
+    height: 13px;
 }
 
-.dataTables_wrapper .dataTables_filter {
-    padding-right: 18px;
+[type="checkbox"] + span:not(.lever) {
+    display: inherit;
+    
 }
+
+[type="checkbox"]:checked + span:not(.lever):before {
+    width: 8px;
+    height: 15px;
+    top: 0px;
+    left: -3px;
+    border-right-color: #0091ea;
+    border-bottom-color: #0091ea;
+}
+
+table.consulta_padrao > thead {
+    border-top: 1px solid #0091ea;
+}
+
+table.consulta_padrao td {
+    padding: 2px 5px;
+}
+
+table.consulta_padrao tr {
+    cursor: pointer;
+}
+
+table.highlight > tbody > tr:hover {
+  background-color: rgba(220, 220, 220, 1);
+}
+
+/*table.consulta_padrao tr:hover,
+table.striped > tbody > tr:nth-child(odd):hover{
+    background-color: #0091ea;
+}*/
 
 .area_botoes_paginacao {
     display: block;
     padding-bottom: 2px;
     position: relative;
     float: right;
+}
+
+input:not([type]) {
+    border-bottom-color: #0091ea;
 }
 
 input:not([type]):focus:not([readonly]){
@@ -111,13 +147,33 @@ input:not([type]):focus:not([readonly]){
 .area_filtro {
     width: 250px;
     float: right;
+    border-bottom-color: #0091ea;
 }
 
 .area_label_cont, .area_botoes_acoes{
     clear: both;
-    float: left;
-    padding-top: 1.2em;
-    padding-left: 0.5em;
+    width: 100%;
+    padding-top: 0.5em;
+    padding-left: 0.8em;
+    padding-right: 0.8em;
+    display: inline-block;
+}
+
+.area_botoes_acoes {
+    border-top: 1px solid #0091ea;
+}
+
+.acoes_sem_grid, .acoes_com_grid {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.acoes_com_grid {
+    margin-left: 10px;
+}
+
+.pagination li a{
+    font-size: 1em;
 }
 
 .pagination li.active{
@@ -128,10 +184,15 @@ input:not([type]):focus:not([readonly]){
     background-color: #0091ea;
     height: 25px;
     line-height: 25px;
-    font-size: 11px;
+    font-size: 0.8em;
     margin-left: -4px;
+    padding: 0px 7px;
 }
 
 .btn-small:hover  {
     background-color: #0091ea;
+}
+
+.btn-small.disabled {
+    background-color: #37474f;
 }
