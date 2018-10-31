@@ -12,13 +12,14 @@
                         <input id="busca" placeholder="Buscar:">
                     </div>
                     <div class="area_botoes_acoes">
-                        <div class="acoes_sem_grid">
+<!--                        <div class="acoes_sem_grid">
                             <a class="waves-effect waves-light btn-small">Incluir</a>
                             <a class="waves-effect waves-light btn-small">Alterar</a>
                             <a class="waves-effect waves-light btn-small">Excluir</a>
                             <a class="waves-effect waves-light btn-small">Visualizar</a>
-                        </div>
+                        </div>-->
                         <div class="acoes_com_grid">
+                            <a class="waves-effect waves-light btn-small disabled">Visualizar</a>
                             <a class="waves-effect waves-light btn-small disabled">Adicionar ao Pedido</a>
                         </div>
                     </div>
