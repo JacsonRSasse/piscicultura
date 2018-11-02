@@ -5,9 +5,11 @@
         <group>
             <file>file:/C:/xampp/htdocs/piscicultura/public/js/funcoes.js</file>
             <file>file:/C:/xampp/htdocs/piscicultura/public/css/principal.css</file>
+            <file>file:/C:/xampp/htdocs/piscicultura/app/Equipamento.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/public/css/materialize.css</file>
             <file>file:/C:/xampp/htdocs/piscicultura/resources/views/produtor/alugar_equipamento.blade.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/app/Http/Controllers/ControllerProdutor.php</file>
+            <file>file:/C:/xampp/htdocs/piscicultura/config/database.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/resources/views/base/corpo_pagina.blade.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/routes/web.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/public/js/datatables.js</file>

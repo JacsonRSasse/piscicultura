@@ -6,14 +6,19 @@ $(document).ready(function() {
     $('#seleciona_tudo').click(function(){
         var oTable = document.getElementById('consulta_padrao');
         var aLinha = oTable.getElementsByTagName('tr');
-        this.checked = !this.checked;
-        $.each(aLinha, function(){ selecionaLinha(this); });
+        var bCheck = this.checked;
+        this.checked = !bCheck;
+        $.each(aLinha, function(){ selecionaLinha(this, bCheck); });
     });
+    $('#example').DataTable();
 });
 
-function selecionaLinha(oLinha){
+function selecionaLinha(oLinha, bCheckTodos){
+    debugger;
     var bCheck = oLinha.firstElementChild.firstElementChild.firstElementChild.checked;
-    oLinha.firstElementChild.firstElementChild.firstElementChild.checked = !bCheck;
+    if(bCheck != bCheckTodos) {
+        oLinha.firstElementChild.firstElementChild.firstElementChild.checked = !bCheck;
+    }
     ativaOuNaoAcaoGrid();
 }
 

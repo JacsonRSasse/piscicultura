@@ -42,6 +42,8 @@
                         </thead>
 
                         <tbody>
+                            @if(count($aEquipamentos))
+                            @foreach($aEquipamentos as $oEquipamento)
                             <tr>
                                 <td>
                                     <label>
@@ -49,128 +51,38 @@
                                         <span></span>
                                     </label>
                                 </td>
-                                <td>Rede 100 Metros</td>
-                                <td>Disponível</td>
-                                <td>1</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
+                                <td>{{ $oEquipamento->eqpnome }}</td>
+                                <td>{{ $oEquipamento->eqpstatus }}</td>
+                                <td>{{ $oEquipamento->eqpquantidade }}</td>
+                                <td>{{ $oEquipamento->pesnomerazao }}</td>
+                                <td>{{ $oEquipamento->aludatainicio }}</td>
+                                <td>{{ $oEquipamento->aludatafim }}</td>
                             </tr>
+                            @endforeach
+                            @else
                             <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span></span>
-                                    </label>
+                                <td colspan="7">
+                                    <label>Sem Registros</label>
                                 </td>
-                                <td>Caixa de Transporte</td>
-                                <td>Alugado</td>
-                                <td>13</td>
-                                <td>Rubens Sasse</td>
-                                <td>01/10/2018</td>
-                                <td>12/10/2018</td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span></span>
-                                    </label>
-                                </td>
-                                <td>Rede 200 Metros</td>
-                                <td>Alugado</td>
-                                <td>2</td>
-                                <td>Rubens Sasse</td>
-                                <td>01/10/2018</td>
-                                <td>12/10/2018</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span></span>
-                                    </label>
-                                </td>
-                                <td>Esteira Elétrica</td>
-                                <td>Alugado</td>
-                                <td>1</td>
-                                <td>Rubens Sasse</td>
-                                <td>01/10/2018</td>
-                                <td>12/10/2018</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span></span>
-                                    </label>
-                                </td>
-                                <td>Motor/Bomba</td>
-                                <td>Alugado</td>
-                                <td>1</td>
-                                <td>Rubens Sasse</td>
-                                <td>01/10/2018</td>
-                                <td>12/10/2018</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span></span>
-                                    </label>
-                                </td>
-                                <td>Tanque de Transporte</td>
-                                <td>Alugado</td>
-                                <td>3</td>
-                                <td>Rubens Sasse</td>
-                                <td>01/10/2018</td>
-                                <td>12/10/2018</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span></span>
-                                    </label>
-                                </td>
-                                <td>Aerador</td>
-                                <td>Disponível</td>
-                                <td>3</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span></span>
-                                    </label>
-                                </td>
-                                <td>Aerador</td>
-                                <td>Alugado</td>
-                                <td>1</td>
-                                <td>Rubens Sasse</td>
-                                <td>05/08/2018</td>
-                                <td>05/08/2019</td>
-                            </tr>
+                            @endif
                         </tbody>
 
                     </table>
 
                     <div class="area_label_cont">
                         <span>
-                            <label>Exibindo 8 de 24 Registros</label>
+                            <label>Exibindo {{ $aEquipamentos->count() }} de {{ $aEquipamentos->total() }} Registros</label>
                         </span>
                     </div>
 
                     <div class="area_botoes_paginacao">
                         <ul class="pagination">
-                            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                            <li class="active"><a href="#!">1</a></li>
-                            <li class="waves-effect"><a href="#!">2</a></li>
-                            <li class="waves-effect"><a href="#!">3</a></li>
-                            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                            <li class="waves-effect {{ $aEquipamentos->currentPage() == 1 ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->previousPageUrl() }}"><i class="material-icons">chevron_left</i></a></li>
+                            @for($i = 1; $i < $aEquipamentos->total() + 1 ; $i++)
+                            <li class="waves-effect {{ $aEquipamentos->currentPage() == $i ? ' active' : '' }}"><a href="{{ $aEquipamentos->url($i) }}">{{ $i }}</a></li>
+                            @endfor
+                            <li class="waves-effect {{ $aEquipamentos->currentPage() == $aEquipamentos->lastPage() ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->nextPageUrl() }}"><i class="material-icons">chevron_right</i></a></li>
                         </ul>
                     </div>
 

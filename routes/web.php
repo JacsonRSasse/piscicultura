@@ -13,6 +13,12 @@ Route::get(
 Route::get(
         '/produtor/alugar_equipamento', 
         ['as' => 'alugarEquipamento', 'uses' => 'ControllerProdutor@getViewAlugarEquipamento']);
+Route::get(
+        '/teste',
+        function(){
+            $lista = App\Http\Controllers\ControllerProdutor::teste();
+            dd($lista);
+        });
 
 
 
