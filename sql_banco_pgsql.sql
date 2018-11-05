@@ -77,7 +77,7 @@ CREATE TABLE public.tbpedido (
 
 CREATE TABLE public.tbusuario (
                 usucodigo INTEGER NOT NULL,
-                ususenha VARCHAR(20) NOT NULL,
+                ususenha VARCHAR(50) NOT NULL,
                 pescodigo INTEGER NOT NULL,
                 CONSTRAINT tbusuario_pk PRIMARY KEY (usucodigo)
 );

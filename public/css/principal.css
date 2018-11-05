@@ -18,6 +18,29 @@ body {
     }
 }
 
+.row {
+    position: relative;
+    height: 10em;    
+}
+
+@media only screen and (min-width: 993px) {
+    .row {
+        height: 30em;
+    }
+}
+
+#tela-login {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+}
+
+@media only screen and (max-width: 980px) {
+    #tela-login {
+        left: 19%;
+    }
+}
+
 .card-perfil {
     width: 450px; 
 }
@@ -44,10 +67,6 @@ body {
     border-bottom: 1px solid rgba(0,0,0,0.5);
 }
 
-/*.sidenav .collapsible-body, .sidenav .active {
-    background-color: #0083D3;
-}*/
-
 .sidenav li a{
     position: relative;
     display: block;
@@ -72,14 +91,7 @@ li {
     width: 24px;
     line-height: 24px;
     margin: 20px 0 0 0;
-/*    -webkit-animation: spin 4s linear normal;
-    -moz-animation:  4s linear normal;
-    animation: spin 4s linear normal;*/
 }
-
-/*@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotae(360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }*/
 
 #logo-usuario {
     line-height: inherit;
@@ -140,13 +152,58 @@ table.striped > tbody > tr:nth-child(odd):hover{
     float: right;
 }
 
-input:not([type]) {
+input:not([type]),
+input[type=text]:not(.browser-default),
+input[type=password]:not(.browser-default),
+input[type=email]:not(.browser-default),
+input[type=url]:not(.browser-default),
+input[type=time]:not(.browser-default),
+input[type=date]:not(.browser-default),
+input[type=datetime]:not(.browser-default),
+input[type=datetime-local]:not(.browser-default),
+input[type=tel]:not(.browser-default),
+input[type=number]:not(.browser-default),
+input[type=search]:not(.browser-default),
+textarea.materialize-textarea {
     border-bottom-color: #0091ea;
 }
 
-input:not([type]):focus:not([readonly]){
+input:not([type]):focus:not([readonly]),
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=url]:not(.browser-default):focus:not([readonly]),
+input[type=time]:not(.browser-default):focus:not([readonly]),
+input[type=date]:not(.browser-default):focus:not([readonly]),
+input[type=datetime]:not(.browser-default):focus:not([readonly]),
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]),
+input[type=tel]:not(.browser-default):focus:not([readonly]),
+input[type=number]:not(.browser-default):focus:not([readonly]),
+input[type=search]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]){
     border-bottom: 1px solid #0091ea;
 }
+
+input:not([type]):focus:not([readonly]) + label,
+input[type=text]:not(.browser-default):focus:not([readonly]) + label,
+input[type=password]:not(.browser-default):focus:not([readonly]) + label,
+input[type=email]:not(.browser-default):focus:not([readonly]) + label,
+input[type=url]:not(.browser-default):focus:not([readonly]) + label,
+input[type=time]:not(.browser-default):focus:not([readonly]) + label,
+input[type=date]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime]:not(.browser-default):focus:not([readonly]) + label,
+input[type=datetime-local]:not(.browser-default):focus:not([readonly]) + label,
+input[type=tel]:not(.browser-default):focus:not([readonly]) + label,
+input[type=number]:not(.browser-default):focus:not([readonly]) + label,
+input[type=search]:not(.browser-default):focus:not([readonly]) + label,
+textarea.materialize-textarea:focus:not([readonly]) + label {
+  color: #0091ea;
+}
+
+.input-field .prefix.active {
+  color: #0091ea;
+}
+
 
 .area_filtro {
     width: 250px;
@@ -193,8 +250,11 @@ input:not([type]):focus:not([readonly]){
     background-color: #0091ea;
 }
 
+.btn, .btn-large, .btn-small {
+    background-color: #0091ea;    
+}
+
 .btn-small {
-    background-color: #0091ea;
     height: 25px;
     line-height: 25px;
     font-size: 0.8em;
@@ -202,8 +262,8 @@ input:not([type]):focus:not([readonly]){
     padding: 0px 7px;
 }
 
-.btn-small:hover  {
-    background-color: #0091ea;
+.btn:hover, .btn-large:hover, .btn-small:hover {
+  background-color: #0091ea;
 }
 
 .btn-small.disabled {

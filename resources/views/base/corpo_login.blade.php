@@ -18,7 +18,6 @@
     </head>
     <body> 
     
-    @include('base.navbar_padrao')
     @yield('main')
     
     </body>

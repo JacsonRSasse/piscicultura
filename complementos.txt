@@ -1,0 +1,8 @@
+Adicionar um tipo de usuário com os tipos:
+1 -> Produtor
+2 -> Associação
+3 -> Comprador
+4 -> Fornecedor
+
+
+Adicionar aos tipos constraints com check dos intervalos que correspondem a eles

@@ -1,6 +1,6 @@
 @extends('base.corpo_pagina')
 @section('titulo_navbar', 'Alugar Equipamento')
-@section('nome_usuario', $oUsuario->nome)
+@section('nome_usuario', auth()->user()->getPessoaFromUsuario->getNomeRazao())
 
 @section('main')
 <main>
@@ -20,7 +20,7 @@
                         </div>-->
                         <div class="acoes_com_grid">
                             <a class="waves-effect waves-light btn-small disabled">Visualizar</a>
-                            <a class="waves-effect waves-light btn-small disabled">Adicionar ao Pedido</a>
+                            <a class="waves-effect waves-light btn-small disabled" onclick="onClickAdicionaAoPedido()">Adicionar ao Pedido</a>
                         </div>
                     </div>
                     <table id="consulta_padrao" class="consulta_padrao centered highlight">
@@ -32,12 +32,10 @@
                                         <span></span>
                                     </label>
                                 </th>
+                                <th style="display: none;">Código</th>
                                 <th>Nome</th>
                                 <th>Status</th>
                                 <th>Quantidade</th>
-                                <th>Alugado a</th>
-                                <th>Data de Retirada</th>
-                                <th>Data de Devolução</th>
                             </tr>
                         </thead>
 
@@ -51,12 +49,10 @@
                                         <span></span>
                                     </label>
                                 </td>
-                                <td>{{ $oEquipamento->eqpnome }}</td>
-                                <td>{{ $oEquipamento->eqpstatus }}</td>
-                                <td>{{ $oEquipamento->eqpquantidade }}</td>
-                                <td>{{ $oEquipamento->pesnomerazao }}</td>
-                                <td>{{ $oEquipamento->aludatainicio }}</td>
-                                <td>{{ $oEquipamento->aludatafim }}</td>
+                                <td style="display: none;" id="eqpcodigo_{{$oEquipamento->eqpcodigo}}">{{ $oEquipamento->eqpcodigo }}</td>
+                                <td>{{ $oEquipamento->getNome() }}</td>
+                                <td>{{ $oEquipamento->getDescricaoStatus() }}</td>
+                                <td>{{ $oEquipamento->getQuantidade() }}</td>
                             </tr>
                             @endforeach
                             @else
@@ -79,7 +75,7 @@
                     <div class="area_botoes_paginacao">
                         <ul class="pagination">
                             <li class="waves-effect {{ $aEquipamentos->currentPage() == 1 ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->previousPageUrl() }}"><i class="material-icons">chevron_left</i></a></li>
-                            @for($i = 1; $i < $aEquipamentos->total() + 1 ; $i++)
+                            @for($i = 1; $i < $aEquipamentos->total(); $i++)
                             <li class="waves-effect {{ $aEquipamentos->currentPage() == $i ? ' active' : '' }}"><a href="{{ $aEquipamentos->url($i) }}">{{ $i }}</a></li>
                             @endfor
                             <li class="waves-effect {{ $aEquipamentos->currentPage() == $aEquipamentos->lastPage() ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->nextPageUrl() }}"><i class="material-icons">chevron_right</i></a></li>
@@ -91,4 +87,38 @@
         </div>
     </div>
 </main>
+@endsection
+
+
+@section('comportamentos')
+<script>
+        
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    function onClickAdicionaAoPedido(){
+        var oConsulta = document.getElementById('consulta_padrao');
+        var oCorpo    = oConsulta.getElementsByTagName('tbody');
+        var aLinha    = oCorpo[0].getElementsByTagName('tr');
+        var aSelecionados = [];
+        $.each(aLinha, function(){
+            if(this.firstElementChild.firstElementChild.firstElementChild.checked){
+                $.each(this.getElementsByTagName('td'), function(){
+                    if(this.id) {
+                        aSelecionados.push(this.id);
+                    }
+                });
+            }
+        });
+        if(aSelecionados.length > 0){
+            $.post( '{{ route('addItemCarrinho') }}', {'selecionados' : aSelecionados, _token: '{{csrf_token()}}'}, function(data){
+                console.log(data);
+            });
+        }
+    }
+    
+</script>
 @endsection

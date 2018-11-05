@@ -12,4 +12,28 @@ class Associacao extends Model
     public function getEquipamentosForAssociacao(){
         return $this->hasMany('App\Equipamento', 'asccodigo');
     }
+    
+    function getCodigo(){
+        return $this->asccodigo;
+    }
+    
+    function setCodigo($codigo) {
+        $this->asccodigo = $codigo;
+    }
+    
+    function getNome(){
+        return $this->ascnome;
+    }
+    
+    function setNome($nome){
+        $this->ascnome = $nome;
+    }
+    
+    function getMembrosFromAssociacao(){
+        return $this->hasMany('App\Membro', $this->primaryKey);
+    }
+    
+    function getEquipamentosFromAssociacao(){
+        return $this->hasMany('App\Equipamento', $this->primaryKey);
+    }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Equipamento;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ControllerProdutor extends Controller
 {
@@ -110,43 +112,22 @@ class ControllerProdutor extends Controller
         $oUsuario = new \stdClass();
         $oUsuario->nome = 'Nome do Usuário';
                 
-        $aEquipamentos = DB::table('tbequipamento')
-                            ->join('tbassociacao', 'tbassociacao.asccodigo', '=', 'tbequipamento.asccodigo')
-                            ->join('tbmembro', 'tbmembro.asccodigo', '=', 'tbassociacao.asccodigo')
-                            ->join('tbpessoa', 'tbpessoa.pescodigo', '=', 'tbmembro.pescodigo')
-                            ->join('tbaluguel', 'tbaluguel.memcodigo', '=', 'tbmembro.memcodigo')
-                            ->join('tbequipaluguel', function($oJoin){
-                                $oJoin->on('tbequipaluguel.alunumero', '=', 'tbaluguel.alunumero')
-                                      ->on('tbequipaluguel.eqpcodigo', '=', 'tbequipamento.eqpcodigo');
-                            })
-                            ->select(DB::raw('coalesce(tbpessoa.pesnomerazao, \'-\') as pesnomerazao'),
-                                     'tbequipamento.eqpnome',
-                                     'tbequipamento.eqpstatus',
-                                     'tbequipamento.eqpquantidade',
-                                     'tbaluguel.aludatainicio',
-                                     'tbaluguel.aludatafim')
-                            ->paginate(8);
+        $aEquipamentos = Equipamento::paginate(8);
         
         return view('produtor.alugar_equipamento', compact('aItensMenu', 'oUsuario', 'aEquipamentos'));
     }
     
+    public function addItemCarrinho(Request $req){
+        foreach ($req->selecionados as $iSelecionado) {
+            $iChaveProd = explode('_', $iSelecionado);
+            /*@var $oEquipamento Equipamento*/
+            $oEquipamento = Equipamento::find($iChaveProd[1]);
+        }
+        echo true;
+    }
+    
     public static function teste(){
-        $aEquipamentos = DB::table('tbequipamento')
-                            ->join('tbassociacao', 'tbassociacao.asccodigo', '=', 'tbequipamento.asccodigo')
-                            ->join('tbmembro', 'tbmembro.asccodigo', '=', 'tbassociacao.asccodigo')
-                            ->join('tbpessoa', 'tbpessoa.pescodigo', '=', 'tbmembro.pescodigo')
-                            ->join('tbaluguel', 'tbaluguel.memcodigo', '=', 'tbmembro.memcodigo')
-                            ->join('tbequipaluguel', function($oJoin){
-                                $oJoin->on('tbequipaluguel.alunumero', '=', 'tbaluguel.alunumero')
-                                      ->on('tbequipaluguel.eqpcodigo', '=', 'tbequipamento.eqpcodigo');
-                            })
-                            ->select(DB::raw('coalesce(tbpessoa.pesnomerazao, \'-\') as pesnomerazao'),
-                                     'tbequipamento.eqpnome',
-                                     'tbequipamento.eqpstatus',
-                                     'tbequipamento.eqpquantidade',
-                                     'tbaluguel.aludatainicio',
-                                     'tbaluguel.aludatafim')
-                            ->paginate(1);
+        $aEquipamentos = Equipamento::find(1);
         return $aEquipamentos;
     }
     
