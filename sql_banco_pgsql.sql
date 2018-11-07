@@ -78,6 +78,7 @@ CREATE TABLE public.tbpedido (
 CREATE TABLE public.tbusuario (
                 usucodigo INTEGER NOT NULL,
                 ususenha VARCHAR(50) NOT NULL,
+                usutipo SMALLINT NOT NULL,
                 pescodigo INTEGER NOT NULL,
                 CONSTRAINT tbusuario_pk PRIMARY KEY (usucodigo)
 );
@@ -139,7 +140,7 @@ CREATE TABLE public.tbvendaproducao (
                 venpreco NUMERIC(5,2) NOT NULL,
                 vendetalhe VARCHAR,
                 peicodigo INTEGER NOT NULL,
-                CONSTRAINT tbvendaproducao_pk PRIMARY KEY (vennumero)
+                CONSTRAINT tbvendaproducao_pk PRIMARY KEY (vennumero, memcodigo)
 );
 
 
@@ -149,17 +150,19 @@ CREATE TABLE public.tbnegociacao (
                 cpdnumero INTEGER NOT NULL,
                 negstatus SMALLINT NOT NULL,
                 negproposta NUMERIC(8,2) NOT NULL,
+                memcodigo INTEGER NOT NULL,
                 CONSTRAINT tbnegociacao_pk PRIMARY KEY (negcodigo)
 );
 
 
 CREATE TABLE public.tbaluguel (
                 alunumero INTEGER NOT NULL,
-                aluposfila INTEGER NOT NULL,
-                memcodigo INTEGER NOT NULL,
+                alustatus SMALLINT NOT NULL,
+                aluposfila INTEGER,
                 aludatainicio DATE NOT NULL,
                 aludatafim DATE NOT NULL,
                 aluvalor NUMERIC(8,2) NOT NULL,
+                memcodigo INTEGER NOT NULL,
                 CONSTRAINT tbaluguel_pk PRIMARY KEY (alunumero)
 );
 
@@ -167,6 +170,7 @@ CREATE TABLE public.tbaluguel (
 CREATE TABLE public.tbequipaluguel (
                 alunumero INTEGER NOT NULL,
                 eqpcodigo INTEGER NOT NULL,
+                eqaquantidade SMALLINT DEFAULT 1 NOT NULL,
                 CONSTRAINT tbequipaluguel_pk PRIMARY KEY (alunumero, eqpcodigo)
 );
 
@@ -174,56 +178,56 @@ CREATE TABLE public.tbequipaluguel (
 ALTER TABLE public.tbprodutoracao ADD CONSTRAINT tbracao_tbprodracao_fk
 FOREIGN KEY (raccodigo)
 REFERENCES public.tbracao (raccodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbprodutopeixe ADD CONSTRAINT tbtipopeixe_tbprodpeixe_fk
 FOREIGN KEY (peicodigo)
 REFERENCES public.tbpeixe (peicodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbvendaproducao ADD CONSTRAINT tbtipopeixe_tbvendaprod_fk
 FOREIGN KEY (peicodigo)
 REFERENCES public.tbpeixe (peicodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbcompraproducao ADD CONSTRAINT tbtipopeixe_tbcompraprod_fk
 FOREIGN KEY (peicodigo)
 REFERENCES public.tbpeixe (peicodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbmembro ADD CONSTRAINT tbassociacao_tbmembro_fk
 FOREIGN KEY (asccodigo)
 REFERENCES public.tbassociacao (asccodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbequipamento ADD CONSTRAINT tbassociacao_tbequipamento_fk
 FOREIGN KEY (asccodigo)
 REFERENCES public.tbassociacao (asccodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbequipaluguel ADD CONSTRAINT tbequipamento_tbequipaluguel_fk
 FOREIGN KEY (eqpcodigo)
 REFERENCES public.tbequipamento (eqpcodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbmembro ADD CONSTRAINT tbpessoa_tbmembro_fk
 FOREIGN KEY (pescodigo)
 REFERENCES public.tbpessoa (pescodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
@@ -244,90 +248,90 @@ NOT DEFERRABLE;
 ALTER TABLE public.tbpedido ADD CONSTRAINT tbpessoa_tbpedido_fk
 FOREIGN KEY (pescodigo)
 REFERENCES public.tbpessoa (pescodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbcomprador ADD CONSTRAINT tbpessoa_tbcomprador_fk
 FOREIGN KEY (pescodigo)
 REFERENCES public.tbpessoa (pescodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbcompraproducao ADD CONSTRAINT tbcomprador_tbcompraprod_fk
 FOREIGN KEY (comcodigo)
 REFERENCES public.tbcomprador (comcodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbnegociacao ADD CONSTRAINT tbcompraprod_tbnegociacao_fk
 FOREIGN KEY (cpdnumero)
 REFERENCES public.tbcompraproducao (cpdnumero)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbpedidoproduto ADD CONSTRAINT tbpedido_tbpedprod_fk
 FOREIGN KEY (pednumero)
 REFERENCES public.tbpedido (pednumero)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbproduto ADD CONSTRAINT tbfornecedor_tbproduto_fk
 FOREIGN KEY (forcodigo)
 REFERENCES public.tbfornecedor (forcodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbpedidoproduto ADD CONSTRAINT tbproduto_tbpedprod_fk
 FOREIGN KEY (procodigo)
 REFERENCES public.tbproduto (procodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbprodutoracao ADD CONSTRAINT tbproduto_tbprodracao_fk
 FOREIGN KEY (procodigo)
 REFERENCES public.tbproduto (procodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbprodutopeixe ADD CONSTRAINT tbproduto_tbprodpeixe_fk
 FOREIGN KEY (procodigo)
 REFERENCES public.tbproduto (procodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbaluguel ADD CONSTRAINT tbmembro_tbaluguel_fk
 FOREIGN KEY (memcodigo)
 REFERENCES public.tbmembro (memcodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbvendaproducao ADD CONSTRAINT tbmembro_tbvendaprod_fk
 FOREIGN KEY (memcodigo)
 REFERENCES public.tbmembro (memcodigo)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbnegociacao ADD CONSTRAINT tbvendaprod_tbnegociacao_fk
-FOREIGN KEY (vennumero)
-REFERENCES public.tbvendaproducao (vennumero)
-ON DELETE CASCADE
+FOREIGN KEY (vennumero, memcodigo)
+REFERENCES public.tbvendaproducao (vennumero, memcodigo)
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;
 
 ALTER TABLE public.tbequipaluguel ADD CONSTRAINT tbaluguel_tbequipaluguel_fk
 FOREIGN KEY (alunumero)
 REFERENCES public.tbaluguel (alunumero)
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 NOT DEFERRABLE;

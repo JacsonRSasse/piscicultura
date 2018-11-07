@@ -1,3 +1,6 @@
+<?php
+use App\User;
+?>
 <!doctype html>
 <html>
     <head>
@@ -17,8 +20,11 @@
         @yield('comportamentos')
     </head>
     <body> 
-    
-    @include('base.navbar_padrao')
+    @if(auth()->user()->getTipo() == 1)
+        @include('produtor.navbar_produtor')
+    @else
+        @include('base.navbar_padrao')
+    @endif
     @yield('main')
     
     </body>

@@ -15,6 +15,7 @@ class Membro extends Model
     
     protected $table = 'tbmembro';
     protected $primaryKey = 'memcodigo';
+    public $timestamps = false;
     
     function getCodigo(){
         return $this->memcodigo;
@@ -75,6 +76,10 @@ class Membro extends Model
     
     public function getAssociacaoFromMembro(){
         return $this->belongsTo('App\Associacao', 'asccodigo');
+    }
+    
+    public function getAluguelFromMembro(){
+        return $this->hasMany('App\Aluguel', 'memcodigo');
     }
     
 }

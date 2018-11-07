@@ -7,7 +7,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <!--<link href="{{ asset('css/datatables.css') }}" type="text/css" rel="stylesheet">--> 
         <link href="{{ asset('css/materialize.css') }}" type="text/css" rel="stylesheet"> 
-        <link href="{{ asset('css/principal.css') }}" type="text/css" rel="stylesheet"> 
+        <link href="{{ asset('css/principal_login.css') }}" type="text/css" rel="stylesheet"> 
         <!--<script src="{{ asset('js/jquery-3.3.1.js') }}" type="text/javascript"></script>--> 
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="{{ asset('js/materialize.js') }}" type="text/javascript"></script> 

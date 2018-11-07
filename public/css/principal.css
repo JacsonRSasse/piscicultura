@@ -18,29 +18,6 @@ body {
     }
 }
 
-.row {
-    position: relative;
-    height: 10em;    
-}
-
-@media only screen and (min-width: 993px) {
-    .row {
-        height: 30em;
-    }
-}
-
-#tela-login {
-    position: absolute;
-    top: 50%;
-    left: 25%;
-}
-
-@media only screen and (max-width: 980px) {
-    #tela-login {
-        left: 19%;
-    }
-}
-
 .card-perfil {
     width: 450px; 
 }

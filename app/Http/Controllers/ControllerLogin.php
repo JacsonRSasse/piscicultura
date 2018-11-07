@@ -10,40 +10,39 @@ use App\Pessoa;
 class ControllerLogin extends Controller
 {
     
-    function getTelaLogin($bErro = false) {
-        return view('login.login', compact('bErro'));
+    function getTelaLogin($erro = false) {
+        return view('login.login', compact('erro'));
     }
     
     function doRealizaLogin(Request $req){
-        $dados = $req->all();
-        
+        $dados = $req->all();        
         $aPessoa = [];
+        $iCodigoUsuario = false;
         if($this->isEmail($dados['usuario'])){
             $aPessoa = Pessoa::where('pesemail', $dados['usuario'])->get();
-        } else if($this->isCpfCnpj($dados['usuario'])){
-            $aPessoa = Pessoa::where('pescpfcnpj', $dados['usuario'])->get();
-        } else if(is_int($dados['usuario'])){
+            if(count($aPessoa)){
+                foreach($aPessoa as $oPessoa){
+                    $iCodigoUsuario = $oPessoa->getUsuarioFromPessoa->getCodigo();
+                }
+            }
+        } else if(is_numeric($dados['usuario'])){
             $iCodigoUsuario = $dados['usuario'];
         }
-        if(count($aPessoa)){
-            foreach($aPessoa as $oPessoa){
-                $iCodigoUsuario = $oPessoa->getUsuarioFromPessoa->getCodigo();
+        if($iCodigoUsuario) {
+            if(Auth::attempt(['usucodigo' => $iCodigoUsuario, 'password' => $dados['senha']])){
+                switch (auth()->user()->getTipo()) {
+                    case User::TIPO_PRODUTOR:
+                        return redirect()->route('#');
+                    case User::TIPO_ASSOCIACAO:
+                        return redirect()->route('associacaoIndex');
+                    case User::TIPO_COMPRADOR:
+                        return redirect()->route('compradorIndex');
+                    case User::TIPO_FORNECEDOR:
+                        return redirect()->route('fornecedorIndex');
+                }
             }
         }
-        if(Auth::attempt(['usucodigo' => $iCodigoUsuario, 'password' => $dados['senha']])){
-            switch (auth()->user()->getTipo()) {
-                case User::TIPO_PRODUTOR:
-                    return redirect()->route('#');
-                case User::TIPO_ASSOCIACAO:
-                    break;
-                case User::TIPO_COMPRADOR:
-                    break;
-                case User::TIPO_FORNECEDOR:
-                    break;
-            }
-        } else {
-            $this->getTelaLogin();
-        }
+        return redirect()->route('login', ['erroLogin']);
     }
     
     private function isEmail ($sEmail) {

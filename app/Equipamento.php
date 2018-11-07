@@ -14,6 +14,7 @@ class Equipamento extends Model
         
     protected $table = 'tbequipamento';
     protected $primaryKey = 'eqpcodigo';
+    public $timestamps = false;
         
     function getCodigo(){
         return $this->eqpcodigo;
@@ -66,7 +67,7 @@ class Equipamento extends Model
         return $aLista[$this->getStatus()];
     }
     
-    function gerPrecoDia(){
+    function getPrecoDia(){
         return $this->eqpprecodia;
     }
     

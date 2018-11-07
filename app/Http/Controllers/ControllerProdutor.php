@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Equipamento;
+use App\Aluguel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ControllerProdutor extends Controller
 {
+    // Manunteções
     const PAG_VENDER_PRODUCAO    = 'venderProducao';  
     const PAG_ALUGAR_EQUIPAMENTO = 'alugarEquipamento';  
+    
+    // Consultas
+    const PAG_CARRINHO_EQUIPAMENTO = 'carrinhoEquipamentos';  
+    
     
     private function getObjetoMenuPadrao($sHeader){
         $oItem = new \stdClass();
@@ -46,14 +53,13 @@ class ControllerProdutor extends Controller
     private function getMenuConsulta(){
         $oItem = $this->getObjetoMenuPadrao('Consulta');
         $aItensAndLinks = [
-            [route('#'), 'Consultar Qualquer coisa', 'consultaQualquerCoisa', ''],
+            [route('carrinhoEquipamentos'), 'Carrinho Pedido Aluguel', self::PAG_CARRINHO_EQUIPAMENTO],
         ];
         foreach ($aItensAndLinks as $aItem){
             $oItemItem = new \stdClass();
             $oItemItem->link = $aItem[0];
             $oItemItem->descricao = $aItem[1];
-            $oItemItem->id = $aItem[2];
-            $oItemItem->class = $aItem[3];
+            $oItemItem->class = $aItem[2];
             $oItem->itens[] = $oItemItem;            
         }
         return $oItem;
@@ -93,9 +99,7 @@ class ControllerProdutor extends Controller
     
     public function getIndexProdutor(){
         $aItensMenu = $this->getItensMenu();
-        $oUsuario = new \stdClass();
-        $oUsuario->nome = 'Nome do Usuário';
-        return view('produtor.index_produtor', compact('aItensMenu', 'oUsuario'));
+        return view('produtor.index_produtor', compact('aItensMenu'));
     }
     
     public function getViewVenderProducao(){
@@ -108,23 +112,50 @@ class ControllerProdutor extends Controller
     
     public function getViewAlugarEquipamento(){
         $aItensMenu = $this->getItensMenu();
-        $this->setPaginaAtiva($aItensMenu, self::PAG_ALUGAR_EQUIPAMENTO);
-        $oUsuario = new \stdClass();
-        $oUsuario->nome = 'Nome do Usuário';
-                
+        $this->setPaginaAtiva($aItensMenu, self::PAG_ALUGAR_EQUIPAMENTO);      
         $aEquipamentos = Equipamento::paginate(8);
-        
-        return view('produtor.alugar_equipamento', compact('aItensMenu', 'oUsuario', 'aEquipamentos'));
+        return view('produtor.alugar_equipamento', compact('aItensMenu', 'aEquipamentos'));
     }
     
     public function addItemCarrinho(Request $req){
         foreach ($req->selecionados as $iSelecionado) {
-            $iChaveProd = explode('_', $iSelecionado);
-            /*@var $oEquipamento Equipamento*/
-            $oEquipamento = Equipamento::find($iChaveProd[1]);
+            $aItens = session('carrinhoEquipamento', false);
+            if(!$aItens) {
+                session()->put('carrinhoEquipamento', [$iSelecionado => 1]);
+            } else {
+                if(isset($aItens[$iChaveProd[1]])){
+                    $aItens[$iChaveProd[1]] += 1;
+                } else {
+                    $aItens[$iChaveProd[1]] = 1;
+                }
+                session()->put('carrinhoEquipamento', $aItens);
+            }            
         }
-        echo true;
+        return response()->json('Itens adicionados ao carrinho!');
     }
+    
+    public function getViewCarrinhoEquipamentos(){
+        $aItensMenu = $this->getItensMenu();
+        $this->setPaginaAtiva($aItensMenu, self::PAG_CARRINHO_EQUIPAMENTO);
+        $aEquipamentos = [];
+        $aCarrinho = session('carrinhoEquipamento');
+        if($aCarrinho){
+            foreach ($aCarrinho as $indice => $quantidade) {
+                $aChaves = explode('_', $indice);
+
+                if($oEquipamento = Equipamento::find($aChaves[1])){
+                    $oItem = new \stdClass();
+                    $oItem->codigo = $oEquipamento->getCodigo();
+                    $oItem->nome = $oEquipamento->getNome();
+                    $oItem->quantidade = $quantidade;
+                    $aEquipamentos[] = $oItem;
+                }
+            }
+        }
+        
+        return view('produtor.carrinho_equipamento', compact('aItensMenu', 'aEquipamentos'));
+    }
+    
     
     public static function teste(){
         $aEquipamentos = Equipamento::find(1);

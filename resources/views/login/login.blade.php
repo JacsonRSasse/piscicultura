@@ -5,7 +5,7 @@
 <main>
     <div class="container">
         <div class="row">
-            <div id="tela-login" class="col s12 m8 l6">
+            <div id="tela-login" class="col s12">
                 <div class="card">
                     <div class="card-content formulario-login">
 
@@ -22,11 +22,17 @@
                                 <input type="password" name="senha" id="senha">
                                 <label for="senha">Senha</label>
                             </div>
+                            @if(isset($erro) && $erro)
                             <div class="center">
+                                <label style="color: red;">Usuário ou Senha incorretos</label>                               
+                            </div>
+                            @endif
+                            <div class="center botao_submit">
                                 <button class="btn waves-effect waves-light" type="submit" name="action">Login
                                     <i class="material-icons right">send</i>
                                 </button>
                             </div>
+
 
                         </form>
 
@@ -36,5 +42,10 @@
         </div>
     </div>
 </main>
+<div class="row">
+    <div class="col s12 center logo">
+        <span class="span_logo">Piscicultura Alto Vale do Itajaí</span>
+    </div>
+</div>
 
 @endsection

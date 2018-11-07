@@ -75,7 +75,7 @@
                     <div class="area_botoes_paginacao">
                         <ul class="pagination">
                             <li class="waves-effect {{ $aEquipamentos->currentPage() == 1 ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->previousPageUrl() }}"><i class="material-icons">chevron_left</i></a></li>
-                            @for($i = 1; $i < $aEquipamentos->total(); $i++)
+                            @for($i = 1; $i <= $aEquipamentos->lastPage(); $i++)
                             <li class="waves-effect {{ $aEquipamentos->currentPage() == $i ? ' active' : '' }}"><a href="{{ $aEquipamentos->url($i) }}">{{ $i }}</a></li>
                             @endfor
                             <li class="waves-effect {{ $aEquipamentos->currentPage() == $aEquipamentos->lastPage() ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->nextPageUrl() }}"><i class="material-icons">chevron_right</i></a></li>
@@ -88,8 +88,6 @@
     </div>
 </main>
 @endsection
-
-
 @section('comportamentos')
 <script>
         
@@ -115,7 +113,8 @@
         });
         if(aSelecionados.length > 0){
             $.post( '{{ route('addItemCarrinho') }}', {'selecionados' : aSelecionados, _token: '{{csrf_token()}}'}, function(data){
-                console.log(data);
+                debugger;
+                M.toast({html: data, classes: 'rounded'});
             });
         }
     }

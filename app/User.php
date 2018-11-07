@@ -17,6 +17,7 @@ class User extends Authenticatable
     
     protected $table = 'tbusuario';
     protected $primaryKey = 'usucodigo';
+    public $timestamps = false;
 
     
     function getCodigo(){
@@ -50,7 +51,7 @@ class User extends Authenticatable
     }
     
     public function getAuthPassword() {
-        return bcrypt($this->getSenha());
+        return $this->getSenha();
     }
     
     /**

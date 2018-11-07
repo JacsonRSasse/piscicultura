@@ -3,11 +3,7 @@
         <nav class="navbar white">
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo blue-grey-text">Piscicultura Alto Vale do Itajaí - @yield('titulo_navbar')</a>
-                <ul class="right area_botao_car">
-                    <li class="hide-on-med-and-down">
-                        <a><i class="material-icons">list_alt</i></a>
-                    </li>
-                </ul>
+                @yield('botoes_adicionais')
             </div>
         </nav>
     </div>

@@ -12,6 +12,8 @@ class Pessoa extends Model
 
     protected $table = 'tbpessoa';
     protected $primaryKey = 'pescodigo';
+    public $timestamps = false;
+    public $incrementing = true;
     
     function getCodigo(){
         return $this->pescodigo;

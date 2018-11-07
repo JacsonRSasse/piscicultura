@@ -1,9 +1,13 @@
 <?php
+use Illuminate\Support\Facades\DB;
+Route::get('/', function() {
+    return redirect()->route('login');    
+});
 
 Route::prefix('login')->group(function(){
 
     Route::get(
-            '/',
+            '/{erro?}',
             [
                 'as'   => 'login', 
                 'uses' => 'ControllerLogin@getTelaLogin'
@@ -33,9 +37,35 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post(
                 '/add_item_carrinho',
                 ['as' => 'addItemCarrinho', 'uses' => 'ControllerProdutor@addItemCarrinho']);
+        Route::get(
+                '/itens_pedido',
+                ['as' => 'carrinhoEquipamentos', 'uses' => 'ControllerProdutor@getViewCarrinhoEquipamentos']);
         
     });
     
+    Route::prefix('associacao')->group(function(){
+        
+        Route::get(
+                '/',
+                ['as' => 'associacaoIndex', function(){return 'Not implemmented yiet!';}]);
+        
+    });
+    
+    Route::prefix('comprador')->group(function(){
+        
+        Route::get(
+                '/',
+                ['as' => 'compradorIndex', function(){return 'Not implemmented yiet!';}]);
+        
+    });
+    
+    Route::prefix('fornecedor')->group(function(){
+        
+        Route::get(
+                '/',
+                ['as' => 'fornecedorIndex', function(){return 'Not implemmented yiet!';}]);
+        
+    });
     
 });
 
@@ -43,9 +73,8 @@ Route::group(['middleware' => 'auth'], function(){
 Route::get(
         '/teste',
         function(){
-            /*@var $lista Equipamento*/
-            $lista = App\Membro::find(1);
-            dd($lista->getAssociacaoFromMembro);
+            
+            dd(bcrypt('teste'));
         });
 
 
