@@ -94,5 +94,13 @@ class Equipamento extends Model
     function getAlugueisFromEquipamento(){
         return $this->belongsToMany('App\Aluguel', 'tbequipaluguel', 'eqpcodigo', 'alunumero');
     }
+    
+    function isAlugado(){
+        return $this->getStatus() == self::STATUS_ALUGADO;
+    }
+    
+    function isDisponivel(){
+        return $this->getStatus() == self::STATUS_DISPONIVEL;
+    }
  
 }

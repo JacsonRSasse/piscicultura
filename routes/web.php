@@ -37,9 +37,22 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post(
                 '/add_item_carrinho',
                 ['as' => 'addItemCarrinho', 'uses' => 'ControllerProdutor@addItemCarrinho']);
-        Route::get(
-                '/itens_pedido',
-                ['as' => 'carrinhoEquipamentos', 'uses' => 'ControllerProdutor@getViewCarrinhoEquipamentos']);
+        Route::prefix('itens_pedido')->group(function(){
+            
+            Route::get(
+                    '/',
+                    ['as' => 'carrinhoEquipamentos', 'uses' => 'ControllerProdutor@getViewCarrinhoEquipamentos']);
+            Route::post(
+                    '/remove_item',
+                    ['as' => 'removeItemCarrinho', 'uses' => 'ControllerProdutor@removeItemCarrinho']);
+            Route::get(
+                    '/cancela_pedido',
+                    ['as' => 'cancelaPedido', 'uses' => 'ControllerProdutor@cancelaPedido']);
+            Route::get(
+                    'finaliza_pedido',
+                    ['as' => 'finalizaPedido', 'uses' => 'ControllerProdutor@finalizaPedido']);
+            
+        });
         
     });
     

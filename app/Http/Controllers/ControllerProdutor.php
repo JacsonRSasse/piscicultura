@@ -8,6 +8,7 @@ use App\Aluguel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Container\Container;
 
 class ControllerProdutor extends Controller
 {
@@ -25,6 +26,16 @@ class ControllerProdutor extends Controller
         $oItem->active = false;
         $oItem->itens  = [];
         return $oItem;
+    }
+    
+    
+    /**
+     * @return LengthAwarePaginator
+     */
+    protected function returnPaginator($items, $total, $perPage, $currentPage, $options){
+        return Container::getInstance()->makeWith(LengthAwarePaginator::class, compact(
+            'items', 'total', 'perPage', 'currentPage', 'options'
+        ));
     }
     
     private function getItensMenu(){
@@ -112,32 +123,67 @@ class ControllerProdutor extends Controller
     
     public function getViewAlugarEquipamento(){
         $aItensMenu = $this->getItensMenu();
-        $this->setPaginaAtiva($aItensMenu, self::PAG_ALUGAR_EQUIPAMENTO);      
-        $aEquipamentos = Equipamento::paginate(8);
+        $this->setPaginaAtiva($aItensMenu, self::PAG_ALUGAR_EQUIPAMENTO); 
+        $iAssociacao = auth()->user()->getPessoaFromUsuario->getMembroFromPessoa->getAssociacaoFromMembro->getCodigo();
+        $aEquipamentos = Equipamento::find($iAssociacao)->paginate(8);
         return view('produtor.alugar_equipamento', compact('aItensMenu', 'aEquipamentos'));
     }
     
     public function addItemCarrinho(Request $req){
         foreach ($req->selecionados as $iSelecionado) {
-            $aItens = session('carrinhoEquipamento', false);
-            if(!$aItens) {
-                session()->put('carrinhoEquipamento', [$iSelecionado => 1]);
-            } else {
-                if(isset($aItens[$iChaveProd[1]])){
-                    $aItens[$iChaveProd[1]] += 1;
+            if(!$this->verificaEquipamentoAlugado($iSelecionado) || $req->ignoreAlugado){
+                $aItens = session('carrinhoEquipamento', false);
+                $bAdd = false;
+                if(!$aItens) {
+                    session()->put('carrinhoEquipamento', [$iSelecionado => 1]);
+                    $bAdd = true;
                 } else {
-                    $aItens[$iChaveProd[1]] = 1;
+                    if(isset($aItens[$iSelecionado])){
+                        if($this->verificaQuantidadeDisponivel($aItens[$iSelecionado], $iSelecionado)){
+                            $aItens[$iSelecionado] += 1;     
+                            $bAdd = true;
+                        }
+                    } else {
+                        $aItens[$iSelecionado] = 1;
+                        $bAdd = true;
+                    }
+                    session()->put('carrinhoEquipamento', $aItens);
                 }
-                session()->put('carrinhoEquipamento', $aItens);
-            }            
+                if($bAdd){
+                    $sMsg = 'Itens adicionados ao carrinho!';
+                } else {
+                    $sMsg = 'Itens já adicionados ao carrinho!';                    
+                }
+                $aRetorno = [
+                    'msg' => $sMsg,
+                    'equipAlugado' => false
+                ];                    
+            } else {
+                $aRetorno = [
+                        'msg' => '',
+                        'equipAlugado' => true
+                    ];
+            }
         }
-        return response()->json('Itens adicionados ao carrinho!');
+        return response()->json($aRetorno);
     }
     
+    private function verificaEquipamentoAlugado($sChave){
+        $aChave = explode('_', $sChave);
+        $oEquipamento = Equipamento::find($aChave[1]);
+        return $oEquipamento->isAlugado();
+    }
+    
+    private function verificaQuantidadeDisponivel($iQtdeCarrinho, $sChave){
+        $aChave = explode('_', $sChave);
+        $oEquipamento = Equipamento::find($aChave[1]);
+        return $oEquipamento->getQuantidade() > $iQtdeCarrinho;
+    }
+        
     public function getViewCarrinhoEquipamentos(){
         $aItensMenu = $this->getItensMenu();
         $this->setPaginaAtiva($aItensMenu, self::PAG_CARRINHO_EQUIPAMENTO);
-        $aEquipamentos = [];
+        $aItens = [];
         $aCarrinho = session('carrinhoEquipamento');
         if($aCarrinho){
             foreach ($aCarrinho as $indice => $quantidade) {
@@ -148,15 +194,30 @@ class ControllerProdutor extends Controller
                     $oItem->codigo = $oEquipamento->getCodigo();
                     $oItem->nome = $oEquipamento->getNome();
                     $oItem->quantidade = $quantidade;
-                    $aEquipamentos[] = $oItem;
+                    $aItens[] = $oItem;
                 }
             }
         }
-        
+        $aEquipamentos = $this->returnPaginator($aItens, count($aItens), 8, 1, [
+            'path' => route('carrinhoEquipamentos'),
+            'pageName' => 'page',
+        ]);        
+        $aEquipamentos->links();
         return view('produtor.carrinho_equipamento', compact('aItensMenu', 'aEquipamentos'));
     }
     
-    
+    public function removeItemCarrinho(Request $req){
+        foreach ($req->selecionados as $iSelecionado) {
+            $aItens = session('carrinhoEquipamento', false);
+            if(isset($aItens[$iSelecionado])){
+                unset($aItens[$iSelecionado]);
+                session()->put('carrinhoEquipamento', $aItens);
+            }
+        }
+    }
+
+
+
     public static function teste(){
         $aEquipamentos = Equipamento::find(1);
         return $aEquipamentos;

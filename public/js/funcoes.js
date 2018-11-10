@@ -1,5 +1,6 @@
 $(document).ready(function() {
     $('.collapsible').collapsible();
+    $('.modal').modal();
     $('#consulta_padrao>tbody>tr').click(function(){
         selecionaLinha(this);
     });

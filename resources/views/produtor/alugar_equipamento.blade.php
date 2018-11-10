@@ -12,15 +12,9 @@
                         <input id="busca" placeholder="Buscar:">
                     </div>
                     <div class="area_botoes_acoes">
-<!--                        <div class="acoes_sem_grid">
-                            <a class="waves-effect waves-light btn-small">Incluir</a>
-                            <a class="waves-effect waves-light btn-small">Alterar</a>
-                            <a class="waves-effect waves-light btn-small">Excluir</a>
-                            <a class="waves-effect waves-light btn-small">Visualizar</a>
-                        </div>-->
                         <div class="acoes_com_grid">
-                            <a class="waves-effect waves-light btn-small disabled">Visualizar</a>
-                            <a class="waves-effect waves-light btn-small disabled" onclick="onClickAdicionaAoPedido()">Adicionar ao Pedido</a>
+                            <!--<a  class="waves-effect waves-light btn-small disabled">Visualizar</a>-->
+                            <a class="waves-effect waves-light btn-small disabled" onclick="onClickAdicionaAoPedido(false)">Adicionar ao Pedido</a>
                         </div>
                     </div>
                     <table id="consulta_padrao" class="consulta_padrao centered highlight">
@@ -82,6 +76,17 @@
                         </ul>
                     </div>
 
+                    <div id="modal_aviso" class="modal">
+                        <div class="modal-content">
+                            <h4>Equipamento Alugado</h4>
+                            <p>O equipamento solicitado encontra-se alugado. Deseja adiciona-lo mesmo assim à lista de pedidos? Seu pedido será posto na fila de espera e você será notificado quando o equipamento estiver disponível.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat" onclick="onClickAdicionaAoPedido(true)">Aceitar</a>
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -90,34 +95,37 @@
 @endsection
 @section('comportamentos')
 <script>
-        
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    
-    function onClickAdicionaAoPedido(){
+
+    function onClickAdicionaAoPedido(bIgnoreAlugado) {
         var oConsulta = document.getElementById('consulta_padrao');
-        var oCorpo    = oConsulta.getElementsByTagName('tbody');
-        var aLinha    = oCorpo[0].getElementsByTagName('tr');
+        var oCorpo = oConsulta.getElementsByTagName('tbody');
+        var aLinha = oCorpo[0].getElementsByTagName('tr');
         var aSelecionados = [];
-        $.each(aLinha, function(){
-            if(this.firstElementChild.firstElementChild.firstElementChild.checked){
-                $.each(this.getElementsByTagName('td'), function(){
-                    if(this.id) {
+        $.each(aLinha, function () {
+            if (this.firstElementChild.firstElementChild.firstElementChild.checked) {
+                $.each(this.getElementsByTagName('td'), function () {
+                    if (this.id) {
                         aSelecionados.push(this.id);
                     }
                 });
             }
         });
-        if(aSelecionados.length > 0){
-            $.post( '{{ route('addItemCarrinho') }}', {'selecionados' : aSelecionados, _token: '{{csrf_token()}}'}, function(data){
-                debugger;
-                M.toast({html: data, classes: 'rounded'});
+        if (aSelecionados.length > 0) {
+            $.post('{{ route('addItemCarrinho') }}', {'selecionados': aSelecionados, _token: '{{csrf_token()}}', 'ignoreAlugado' : bIgnoreAlugado}, function (data) {
+                if(data['msg'] != '' && !data['equipAlugado']) {
+                    M.toast({html: data['msg'], classes: 'rounded'});                    
+                } else {
+                    $('.modal').modal('open');
+                }
             });
         }
     }
-    
+
 </script>
 @endsection

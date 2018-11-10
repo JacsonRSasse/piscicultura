@@ -219,6 +219,11 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
     margin-left: 10px;
 }
 
+/*.pagination li {
+    height: 25px;
+    width: 25px;
+}*/
+
 .pagination li a{
     font-size: 1em;
 }
