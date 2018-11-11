@@ -8,9 +8,6 @@
         <div class="row" style="position: relative;">                    
             <div class="col l12 m12 s12">
                 <div class="card" style="display: table; width: 100%;">
-                    <div class="area_filtro">
-                        <input id="busca" placeholder="Buscar:">
-                    </div>
                     <div class="area_botoes_acoes">
                         <div class="acoes_sem_grid">
                             <a class="waves-effect waves-light btn-small" onclick="onClickCancelaPedido()">Cancelar</a>
@@ -20,7 +17,7 @@
                             <a class="waves-effect waves-light btn-small disabled" onclick="onClickExcluiItemPedido()">Excluir</a>
                         </div>
                     </div>
-                    <table id="consulta_padrao" class="consulta_padrao centered highlight">
+                    <table id="dataTable_consulta" class="consulta_padrao centered highlight">
                         <thead>
                             <tr>
                                 <th>
@@ -61,13 +58,13 @@
 
                     </table>
 
-                    <div class="area_label_cont">
+<!--                    <div class="area_label_cont">
                         <span>
                             <label>Exibindo {{ $aEquipamentos->count() }} de {{ $aEquipamentos->total() }} Registros</label>
                         </span>
-                    </div>
+                    </div>-->
 
-                    <div class="area_botoes_paginacao">
+<!--                    <div class="area_botoes_paginacao">
                         <ul class="pagination">
                             <li class="waves-effect {{ $aEquipamentos->currentPage() == 1 ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->previousPageUrl() }}"><i class="material-icons">chevron_left</i></a></li>
                             @for($i = 1; $i <= $aEquipamentos->lastPage(); $i++)
@@ -75,7 +72,7 @@
                             @endfor
                             <li class="waves-effect {{ $aEquipamentos->currentPage() == $aEquipamentos->lastPage() ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->nextPageUrl() }}"><i class="material-icons">chevron_right</i></a></li>
                         </ul>
-                    </div>
+                    </div>-->
                 </div>
             </div>
         </div>

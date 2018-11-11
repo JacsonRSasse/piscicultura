@@ -1,17 +1,17 @@
 $(document).ready(function() {
     $('.collapsible').collapsible();
     $('.modal').modal();
-    $('#consulta_padrao>tbody>tr').click(function(){
+    $('#dataTable_consulta>tbody>tr').click(function(){
         selecionaLinha(this);
     });
     $('#seleciona_tudo').click(function(){
-        var oTable = document.getElementById('consulta_padrao');
+        var oTable = document.getElementById('dataTable_consulta');
         var aLinha = oTable.getElementsByTagName('tr');
         var bCheck = this.checked;
         this.checked = !bCheck;
         $.each(aLinha, function(){ selecionaLinha(this, bCheck); });
     });
-//    $('#example').DataTable();
+    $('#dataTable_consulta').DataTable();
 });
 
 
@@ -27,7 +27,7 @@ function selecionaLinha(oLinha, bCheckTodos){
 
 function ativaOuNaoAcaoGrid(){
     var aAcaoGrid = document.getElementsByClassName('acoes_com_grid');
-    var oTable = document.getElementById('consulta_padrao');
+    var oTable = document.getElementById('dataTable_consulta');
     var aLinha = oTable.getElementsByTagName('tr');
     var aBotoes   = aAcaoGrid[0].getElementsByTagName('a');
     var bCheck = false;

@@ -142,7 +142,7 @@ input[type=tel]:not(.browser-default),
 input[type=number]:not(.browser-default),
 input[type=search]:not(.browser-default),
 textarea.materialize-textarea {
-    border-bottom-color: #0091ea;
+    border-bottom-color: black;
 }
 
 input:not([type]):focus:not([readonly]),
@@ -158,7 +158,7 @@ input[type=tel]:not(.browser-default):focus:not([readonly]),
 input[type=number]:not(.browser-default):focus:not([readonly]),
 input[type=search]:not(.browser-default):focus:not([readonly]),
 textarea.materialize-textarea:focus:not([readonly]){
-    border-bottom: 1px solid #0091ea;
+    border-bottom: 1px solid black;
 }
 
 input:not([type]):focus:not([readonly]) + label,
@@ -174,11 +174,11 @@ input[type=tel]:not(.browser-default):focus:not([readonly]) + label,
 input[type=number]:not(.browser-default):focus:not([readonly]) + label,
 input[type=search]:not(.browser-default):focus:not([readonly]) + label,
 textarea.materialize-textarea:focus:not([readonly]) + label {
-  color: #0091ea;
+  color: black;
 }
 
 .input-field .prefix.active {
-  color: #0091ea;
+  color: black;
 }
 
 
@@ -198,7 +198,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 }
 
 .area_botoes_acoes {
-    border-top: 1px solid #0091ea;
+    border-bottom: 1px solid black;
 }
 
 .area_botao_car {

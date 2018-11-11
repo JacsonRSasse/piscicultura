@@ -8,16 +8,13 @@
         <div class="row" style="position: relative;">                    
             <div class="col l12 m12 s12">
                 <div class="card" style="display: table; width: 100%;">
-                    <div class="area_filtro">
-                        <input id="busca" placeholder="Buscar:">
-                    </div>
                     <div class="area_botoes_acoes">
                         <div class="acoes_com_grid">
                             <!--<a  class="waves-effect waves-light btn-small disabled">Visualizar</a>-->
                             <a class="waves-effect waves-light btn-small disabled" onclick="onClickAdicionaAoPedido(false)">Adicionar ao Pedido</a>
                         </div>
                     </div>
-                    <table id="consulta_padrao" class="consulta_padrao centered highlight">
+                    <table id="dataTable_consulta" class="consulta_padrao centered highlight">
                         <thead>
                             <tr>
                                 <th>
@@ -60,7 +57,7 @@
 
                     </table>
 
-                    <div class="area_label_cont">
+<!--                    <div class="area_label_cont">
                         <span>
                             <label>Exibindo {{ $aEquipamentos->count() }} de {{ $aEquipamentos->total() }} Registros</label>
                         </span>
@@ -74,7 +71,7 @@
                             @endfor
                             <li class="waves-effect {{ $aEquipamentos->currentPage() == $aEquipamentos->lastPage() ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->nextPageUrl() }}"><i class="material-icons">chevron_right</i></a></li>
                         </ul>
-                    </div>
+                    </div>-->
 
                     <div id="modal_aviso" class="modal">
                         <div class="modal-content">
