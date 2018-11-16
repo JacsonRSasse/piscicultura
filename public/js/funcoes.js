@@ -1,6 +1,13 @@
 $(document).ready(function() {
+    carregaArquivos();
+});
+
+function carregaArquivos(){
     $('.collapsible').collapsible();
     $('.modal').modal();
+    $('.dropdown-trigger').dropdown();
+    $('.sidenav').sidenav();
+    $('.datepicker').datepicker();
     $('#dataTable_consulta>tbody>tr').click(function(){
         selecionaLinha(this);
     });
@@ -11,10 +18,29 @@ $(document).ready(function() {
         this.checked = !bCheck;
         $.each(aLinha, function(){ selecionaLinha(this, bCheck); });
     });
-    $('#dataTable_consulta').DataTable();
-});
+    $('#dataTable_consulta').DataTable({
+        "order": [[ 2, "asc" ]],
+        "dom": '<"top"f>rt<"bottom"lp><"clear">'
+    });
+}
 
+function retornaItens(){
+    var oConsulta = document.getElementById('dataTable_consulta');
+    var oCorpo = oConsulta.getElementsByTagName('tbody');
+    var aLinha = oCorpo[0].getElementsByTagName('tr');
+    var aSelecionados = [];
 
+    $.each(aLinha, function () {
+        if (this.firstElementChild.firstElementChild.firstElementChild.checked) {
+            $.each(this.getElementsByTagName('td'), function () {
+                if (this.id) {
+                    aSelecionados.push(this.id);
+                }
+            });
+        }
+    });
+    return aSelecionados;
+}
 
 
 function selecionaLinha(oLinha, bCheckTodos){

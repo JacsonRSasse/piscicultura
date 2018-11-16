@@ -21,13 +21,17 @@ Route::prefix('login')->group(function(){
     
 });
 
+Route::get(
+        'logout',
+        ['as' => 'logout', 'uses' => 'ControllerLogin@doRealizaLogout']);
+
 Route::group(['middleware' => 'auth'], function(){
     
     Route::prefix('produtor')->group(function(){
         
         Route::get(
                 '/',
-                ['as' => '#', 'uses' => 'ControllerProdutor@getIndexProdutor']);
+                ['as' => 'produtorIndex', 'uses' => 'ControllerProdutor@getIndexProdutor']);
         Route::get(
                 '/vender_producao',
                 ['as' => 'venderProducao', 'uses' => 'ControllerProdutor@getViewVenderProducao']);
@@ -37,6 +41,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post(
                 '/add_item_carrinho',
                 ['as' => 'addItemCarrinho', 'uses' => 'ControllerProdutor@addItemCarrinho']);
+        
         Route::prefix('itens_pedido')->group(function(){
             
             Route::get(
@@ -48,7 +53,7 @@ Route::group(['middleware' => 'auth'], function(){
             Route::get(
                     '/cancela_pedido',
                     ['as' => 'cancelaPedido', 'uses' => 'ControllerProdutor@cancelaPedido']);
-            Route::get(
+            Route::post(
                     'finaliza_pedido',
                     ['as' => 'finalizaPedido', 'uses' => 'ControllerProdutor@finalizaPedido']);
             

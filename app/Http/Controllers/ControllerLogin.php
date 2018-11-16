@@ -32,7 +32,7 @@ class ControllerLogin extends Controller
             if(Auth::attempt(['usucodigo' => $iCodigoUsuario, 'password' => $dados['senha']])){
                 switch (auth()->user()->getTipo()) {
                     case User::TIPO_PRODUTOR:
-                        return redirect()->route('#');
+                        return redirect()->route('produtorIndex');
                     case User::TIPO_ASSOCIACAO:
                         return redirect()->route('associacaoIndex');
                     case User::TIPO_COMPRADOR:
@@ -43,6 +43,11 @@ class ControllerLogin extends Controller
             }
         }
         return redirect()->route('login', ['erroLogin']);
+    }
+    
+    public function doRealizaLogout(){
+        auth()->logout();
+        return redirect()->route('login');
     }
     
     private function isEmail ($sEmail) {

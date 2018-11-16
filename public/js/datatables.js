@@ -4868,7 +4868,7 @@
 			}
 		} );
 	
-//		return div[0];
+		return div[0];
 	}
 	
 	
@@ -10206,7 +10206,7 @@
 		 *      } );
 		 *    } );
 		 */
-		"aLengthMenu": [ 10, 25, 50, 100 ],
+		"aLengthMenu": [ 8, 10, 25, 50, 100 ],
 	
 	
 		/**
@@ -11210,7 +11210,7 @@
 		 *      } );
 		 *    } )
 		 */
-		"iDisplayLength": 10,
+		"iDisplayLength": 8,
 	
 	
 		/**
@@ -11404,7 +11404,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Próximo",
+				"sNext": ">",
 	
 	
 				/**
@@ -11427,7 +11427,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Anterior"
+				"sPrevious": "<"
 			},
 	
 			/**

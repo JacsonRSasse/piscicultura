@@ -14,10 +14,10 @@
                             <a class="waves-effect waves-light btn-small disabled" onclick="onClickAdicionaAoPedido(false)">Adicionar ao Pedido</a>
                         </div>
                     </div>
-                    <table id="dataTable_consulta" class="consulta_padrao centered highlight">
+                    <table id="dataTable_consulta" class="consulta_padrao compact centered cell-border highlight">
                         <thead>
                             <tr>
-                                <th>
+                                <th style="width: 40px;" class="sorting_desc_disabled ">
                                     <label>
                                         <input id="seleciona_tudo" type="checkbox" />
                                         <span></span>
@@ -57,22 +57,6 @@
 
                     </table>
 
-<!--                    <div class="area_label_cont">
-                        <span>
-                            <label>Exibindo {{ $aEquipamentos->count() }} de {{ $aEquipamentos->total() }} Registros</label>
-                        </span>
-                    </div>
-
-                    <div class="area_botoes_paginacao">
-                        <ul class="pagination">
-                            <li class="waves-effect {{ $aEquipamentos->currentPage() == 1 ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->previousPageUrl() }}"><i class="material-icons">chevron_left</i></a></li>
-                            @for($i = 1; $i <= $aEquipamentos->lastPage(); $i++)
-                            <li class="waves-effect {{ $aEquipamentos->currentPage() == $i ? ' active' : '' }}"><a href="{{ $aEquipamentos->url($i) }}">{{ $i }}</a></li>
-                            @endfor
-                            <li class="waves-effect {{ $aEquipamentos->currentPage() == $aEquipamentos->lastPage() ? ' disabled' : '' }}"><a href="{{ $aEquipamentos->nextPageUrl() }}"><i class="material-icons">chevron_right</i></a></li>
-                        </ul>
-                    </div>-->
-
                     <div id="modal_aviso" class="modal">
                         <div class="modal-content">
                             <h4>Equipamento Alugado</h4>
@@ -100,19 +84,7 @@
     });
 
     function onClickAdicionaAoPedido(bIgnoreAlugado) {
-        var oConsulta = document.getElementById('consulta_padrao');
-        var oCorpo = oConsulta.getElementsByTagName('tbody');
-        var aLinha = oCorpo[0].getElementsByTagName('tr');
-        var aSelecionados = [];
-        $.each(aLinha, function () {
-            if (this.firstElementChild.firstElementChild.firstElementChild.checked) {
-                $.each(this.getElementsByTagName('td'), function () {
-                    if (this.id) {
-                        aSelecionados.push(this.id);
-                    }
-                });
-            }
-        });
+        var aSelecionados = retornaItens();
         if (aSelecionados.length > 0) {
             $.post('{{ route('addItemCarrinho') }}', {'selecionados': aSelecionados, _token: '{{csrf_token()}}', 'ignoreAlugado' : bIgnoreAlugado}, function (data) {
                 if(data['msg'] != '' && !data['equipAlugado']) {

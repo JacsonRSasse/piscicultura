@@ -117,6 +117,21 @@ table.highlight > tbody > tr:hover {
   background-color: rgba(220, 220, 220, 1);
 }
 
+select.select_itens {
+    display: table;
+    height: 2rem;
+    border: 1px solid #979797;
+    background: linear-gradient(to bottom, white     0%, #dcdcdc 100%);
+}
+
+div.dataTables_length label {
+    display: flex;
+    align-items: center;
+    padding-top: 3%;
+    white-space: pre;
+    color: #333 !important;
+}
+
 /*table.consulta_padrao tr:hover,
 table.striped > tbody > tr:nth-child(odd):hover{
     background-color: #0091ea;
@@ -250,4 +265,13 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
 .btn-small.disabled {
     background-color: #37474f;
+}
+
+/*Dropdown*/
+#dropdown_user {
+    top: -55px;
+}
+
+#dropdown_user ul li a {
+    color: #0091ea;
 }

@@ -12,6 +12,7 @@ class EquipamentoAluguel extends Model
     protected $primaryKey = ['eqpcodigo', 'alunumero'];
     public $incrementing = false;
     public $timestamps = false;
+    private $sMethod = false;
     
     function getEquipamento(){
         return $this->eqpcodigo;
@@ -40,16 +41,16 @@ class EquipamentoAluguel extends Model
         ])->first();
         if($oModel){
             $oModel->eqaquantidade = $oModel->getQuantidade() + $iQuantidade;
-            $this->salva(true);
+            $this->sMethod = 'update';
         } else {
             $this->eqaquantidade = $iQuantidade;
-            $this->salva();
+            $this->sMethod = 'save';
         }
     }
     
-    private function salva($bUpdate = false){
-        $sMethod = !$bUpdate ? 'save' : 'update';
-        $this->$sMethod();
+    public function salva(){
+        $sMethod = $this->sMethod;
+        return $this->$sMethod();
     }
     
 }
