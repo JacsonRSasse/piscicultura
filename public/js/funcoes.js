@@ -19,9 +19,13 @@ function carregaArquivos(){
         $.each(aLinha, function(){ selecionaLinha(this, bCheck); });
     });
     $('#dataTable_consulta').DataTable({
-        "order": [[ 2, "asc" ]],
+        "order": [getOrderForConsulta()],
         "dom": '<"top"f>rt<"bottom"lp><"clear">'
     });
+}
+
+function getOrderForConsulta(){
+    return [2, "asc"];
 }
 
 function retornaItens(){

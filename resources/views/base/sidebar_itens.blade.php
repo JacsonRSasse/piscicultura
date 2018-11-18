@@ -1,5 +1,10 @@
 <li>
-    <a id="logo-usuario"><i class="material-icons">person</i>@yield('nome_usuario')</a>
+    <a id="logo-usuario">
+        <i class="material-icons">person</i>
+        @auth
+            {{auth()->user()->getPessoaFromUsuario->getNomeRazao()}}
+        @endauth
+    </a>
 </li>
 <li class="">
     <ul class="collapsible">            

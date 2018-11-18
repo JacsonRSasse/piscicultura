@@ -1,6 +1,5 @@
 @extends('base.corpo_pagina')
 @section('titulo_navbar', 'Vender Produção')
-@section('nome_usuario', $oUsuario->nome)
 @section('main')
 <main>
     <div class="time_line">

@@ -10,7 +10,14 @@
                     <div class="area_botoes_acoes">
                         <div class="acoes_com_grid">
                             <!--<a  class="waves-effect waves-light btn-small disabled">Visualizar</a>-->
-                            <a class="waves-effect waves-light btn-small disabled" onclick="onClickAdicionaAoPedido(false)">Adicionar ao Pedido</a>
+                            <a class="waves-effect waves-light btn-small disabled">Deferir</a>
+                            <a class="waves-effect waves-light btn-small disabled">Indeferir</a>
+                            <a class="waves-effect waves-light btn-small disabled dropdown-trigger" data-target="dropdown_detalhes">Detalhes</a>
+
+                            <ul id="dropdown_detalhes" class="dropdown-content">
+                                <li onclick="carregaModalDetalhesPedido()"><a href="#">Pedido</a></li>
+                                <li><a href="#!">Membro</a></li>
+                            </ul>
                         </div>
                     </div>
                     <table id="dataTable_consulta" class="consulta_padrao compact centered cell-border highlight">
@@ -22,16 +29,17 @@
                                         <span></span>
                                     </label>
                                 </th>
-                                <th style="display: none;">Código</th>
-                                <th>Nome</th>
-                                <th>Status</th>
-                                <th>Quantidade</th>
+
+                                <th>Número</th>
+                                <th>Solicitante</th>
+                                <th>Data Inicio</th>
+                                <th>Data Devolução</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @if(count($aEquipamentos))
-                            @foreach($aEquipamentos as $oEquipamento)
+                            @if(isset($aSolicitacoes) && count($aSolicitacoes))
+                            @foreach($aSolicitacoes as $oSolicitacao)
                             <tr>
                                 <td>
                                     <label>
@@ -39,10 +47,10 @@
                                         <span></span>
                                     </label>
                                 </td>
-                                <td style="display: none;" id="eqpcodigo_{{$oEquipamento->eqpcodigo}}">{{ $oEquipamento->eqpcodigo }}</td>
-                                <td>{{ $oEquipamento->getNome() }}</td>
-                                <td>{{ $oEquipamento->getDescricaoStatus() }}</td>
-                                <td>{{ $oEquipamento->getQuantidade() }}</td>
+                                <td id="alunumero_{{$oSolicitacao->getNumero()}}">{{$oSolicitacao->getNumero()}}</td>
+                                <td>{{$oSolicitacao->getMembroFromAluguel->getPessoaFromMembro->getNomeRazao()}}</td>
+                                <td>{{$oSolicitacao->getDataInicio()}}</td>
+                                <td>{{$oSolicitacao->getDataFim()}}</td>
                             </tr>
                             @endforeach
                             @else
@@ -56,43 +64,37 @@
 
                     </table>
 
-                    <div id="modal_aviso" class="modal">
+                    <div id="modal_detalhes_pedido" class="modal">
                         <div class="modal-content">
-                            <h4>Equipamento Alugado</h4>
-                            <p>O equipamento solicitado encontra-se alugado. Deseja adiciona-lo mesmo assim à lista de pedidos? Seu pedido será posto na fila de espera e você será notificado quando o equipamento estiver disponível.</p>
+                            <h4>Equipamentos Solicitados</h4>
+                            <div id="gridEquipamentos">
+                                
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="#!" class="modal-close waves-effect waves-green btn-flat" onclick="onClickAdicionaAoPedido(true)">Aceitar</a>
-                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
     </div>
 </main>
 @endsection
+
 @section('comportamentos')
 <script>
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    function getOrderForConsulta() {
+        return [1, 'asc'];
+    }
 
-    function onClickAdicionaAoPedido(bIgnoreAlugado) {
+    function carregaModalDetalhesPedido(){
         var aSelecionados = retornaItens();
-        if (aSelecionados.length > 0) {
-            $.post('{{ route('addItemCarrinho') }}', {'selecionados': aSelecionados, _token: '{{csrf_token()}}', 'ignoreAlugado' : bIgnoreAlugado}, function (data) {
-                if(data['msg'] != '' && !data['equipAlugado']) {
-                    M.toast({html: data['msg'], classes: 'rounded'});                    
-                } else {
-                    $('.modal').modal('open');
-                }
-            });
-        }
+        $.get('{{route('buscaDadosSolicitacaoAluguel')}}', {'solicitacao': aSelecionados[0]}, function(xRetorno) {
+            debugger;
+            xRetorno;
+        });
     }
 
 </script>

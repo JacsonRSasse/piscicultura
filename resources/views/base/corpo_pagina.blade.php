@@ -19,12 +19,18 @@ use App\User;
         
         @yield('comportamentos')
     </head>
-    <body> 
-    @if(auth()->user()->getTipo() == 1)
-        @include('produtor.navbar_produtor')
-    @else
-        @include('base.navbar_padrao')
-    @endif
+    <body>
+    @switch(auth()->user()->getTipo())
+        @case( 1 )
+            @include('produtor.navbar_produtor')
+            @break
+        @case( 2 )
+            @include('associacao.navbar_associacao')
+            @break
+        @default
+            @include('base.navbar_padrao')
+            @break
+    @endswitch
     @yield('main')
     
     </body>

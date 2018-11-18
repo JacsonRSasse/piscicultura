@@ -65,7 +65,15 @@ Route::group(['middleware' => 'auth'], function(){
         
         Route::get(
                 '/',
-                ['as' => 'associacaoIndex', function(){return 'Not implemmented yiet!';}]);
+                ['as' => 'associacaoIndex', 'uses' => 'ControllerAssociacao@getIndexAssociacao']);
+        
+        Route::get(
+                '/solicitacoes_aluguel',
+                ['as' => 'solicitacaoAluguel', 'uses' => 'ControllerAssociacao@getViewSolicitacoesAluguel']);
+        
+        Route::get(
+                '/getDadosSolicitacaoAluguel',
+                ['as' => 'buscaDadosSolicitacaoAluguel', 'uses' => 'ControllerAssociacao@getDadosSolicitacaoAluguel']);
         
     });
     

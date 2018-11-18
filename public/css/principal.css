@@ -272,6 +272,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
     top: -55px;
 }
 
-#dropdown_user ul li a {
+#dropdown_user ul li a,
+#dropdown_detalhes li>a{
     color: #0091ea;
 }

@@ -11,24 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Container\Container;
 
-class ControllerProdutor extends Controller
-{
-    // Manunteções
-    const PAG_VENDER_PRODUCAO    = 'venderProducao';  
-    const PAG_ALUGAR_EQUIPAMENTO = 'alugarEquipamento';  
-    
-    // Consultas
-    const PAG_CARRINHO_EQUIPAMENTO = 'carrinhoEquipamentos';  
-    
-    
-    private function getObjetoMenuPadrao($sHeader){
-        $oItem = new \stdClass();
-        $oItem->header = $sHeader;
-        $oItem->active = false;
-        $oItem->itens  = [];
-        return $oItem;
-    }
-    
+class ControllerProdutor extends ControllerItemMenuProdutor {
     
     /**
      * @return LengthAwarePaginator
@@ -38,77 +21,11 @@ class ControllerProdutor extends Controller
             'items', 'total', 'perPage', 'currentPage', 'options'
         ));
     }
-    
-    private function getItensMenu(){
-        $aItensMenu = [];
-        $aItensMenu[] = $this->getMenuManutencao();
-        $aItensMenu[] = $this->getMenuConsulta();
-        return $aItensMenu;
-    }
-    
-    private function getMenuManutencao(){
-        $oItem = $this->getObjetoMenuPadrao('Manutenção');
-        $aItensAndLinks = [
-            [route('alugarEquipamento'), 'Alugar Equipamento', self::PAG_ALUGAR_EQUIPAMENTO, ''],
-//            [route('venderProducao')   , 'Vender Produção'   , self::PAG_VENDER_PRODUCAO   , ''],
-        ];
-        foreach ($aItensAndLinks as $aItem){
-            $oItemItem = new \stdClass();
-            $oItemItem->link = $aItem[0];
-            $oItemItem->descricao = $aItem[1];
-            $oItemItem->class = $aItem[2];
-            $oItem->itens[] = $oItemItem;            
-        }
-        return $oItem;
-    }
-    
-    private function getMenuConsulta(){
-        $oItem = $this->getObjetoMenuPadrao('Consulta');
-        $aItensAndLinks = [
-            [route('carrinhoEquipamentos'), 'Carrinho Pedido Aluguel', self::PAG_CARRINHO_EQUIPAMENTO],
-        ];
-        foreach ($aItensAndLinks as $aItem){
-            $oItemItem = new \stdClass();
-            $oItemItem->link = $aItem[0];
-            $oItemItem->descricao = $aItem[1];
-            $oItemItem->class = $aItem[2];
-            $oItem->itens[] = $oItemItem;            
-        }
-        return $oItem;
-    }
-    
+        
     /*---------------------------------------------------------------------------------------------------------------------*/
     /*|                                                MÉTODOS DAS VIEWS                                                  |*/
     /*---------------------------------------------------------------------------------------------------------------------*/
-    
-    private function setPaginaAtiva($aItensMenu, $sPagina = ''){
-        $bAchou = false;
-        foreach($aItensMenu as $xIndice => $xValue) {
-            if($bAchou){
-                continue;
-            }
-            if(is_object($xValue) || is_array($xValue)){
-                if(!is_numeric($xIndice)){
-                    list($aItensMenu->$xIndice, $bAchou) = $this->setPaginaAtiva($xValue, $sPagina);
-                    if(isset($aItensMenu->active) && $bAchou){
-                        $aItensMenu->active = true;
-                    }
-                } else {
-                    list($aItensMenu[$xIndice], $bAchou) = $this->setPaginaAtiva($xValue, $sPagina);
-                }
-            } else {
-                if($xValue == $sPagina){
-                    $aItensMenu->class = 'active';
-                    $bAchou = true;
-                    return Array($aItensMenu, $bAchou);
-                } else {
-                    continue;                    
-                }
-            }
-        }
-        return Array($aItensMenu, $bAchou);
-    }
-    
+        
     public function getIndexProdutor(){
         $aItensMenu = $this->getItensMenu();
         return view('produtor.index_produtor', compact('aItensMenu'));
@@ -279,13 +196,18 @@ class ControllerProdutor extends Controller
     }
 
     private function getEquipamentoEmTransacaoAluguel($iEquip) {
-        $iQtd = DB::table('tbequipamento')
+        $aItens = DB::table('tbequipamento')
                         ->select(DB::raw('1 as em_transacao'))
                         ->join('tbequipaluguel', 'tbequipaluguel.eqpcodigo', '=', 'tbequipamento.eqpcodigo')
                         ->join('tbaluguel', 'tbaluguel.alunumero', '=', 'tbequipaluguel.alunumero')
                         ->whereIn('tbaluguel.alustatus', array(Aluguel::STATUS_ABERTO_SOLICITACAO, Aluguel::STATUS_EM_ANDAMENTO, Aluguel::STATUS_NA_FILA))
                         ->where('tbequipaluguel.eqpcodigo', $iEquip)->get();
-        return (int)$iQtd[0]->em_transacao;
+        foreach($aItens as $oItem){
+            if($oItem && $oItem->em_transacao){
+                return (int)$oItem->em_transacao;
+            } 
+        } 
+        return false;
     }
     
     private function trocaStatusEquipamento($iEquip, $xQtd){

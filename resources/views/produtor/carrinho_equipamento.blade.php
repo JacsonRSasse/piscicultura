@@ -1,6 +1,5 @@
 @extends('base.corpo_pagina')
 @section('titulo_navbar', 'Carrinho Equipamentos Aluguel')
-@section('nome_usuario', auth()->user()->getPessoaFromUsuario->getNomeRazao())
 
 @section('main')
 <main>
