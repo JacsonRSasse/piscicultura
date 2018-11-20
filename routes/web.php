@@ -1,5 +1,5 @@
 <?php
-use Illuminate\Support\Facades\DB;
+
 Route::get('/', function() {
     return redirect()->route('login');    
 });
@@ -107,3 +107,7 @@ Route::get(
 
 
 //Route::get('/getJson', 'Controller@getJson');
+
+//Auth::routes();
+//
+//Route::get('/home', 'HomeController@index')->name('home');

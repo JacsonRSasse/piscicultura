@@ -8,16 +8,16 @@ function carregaArquivos(){
     $('.dropdown-trigger').dropdown();
     $('.sidenav').sidenav();
     $('.datepicker').datepicker();
-    $('#dataTable_consulta>tbody>tr').click(function(){
-        selecionaLinha(this);
-    });
-    $('#seleciona_tudo').click(function(){
-        var oTable = document.getElementById('dataTable_consulta');
-        var aLinha = oTable.getElementsByTagName('tr');
-        var bCheck = this.checked;
-        this.checked = !bCheck;
-        $.each(aLinha, function(){ selecionaLinha(this, bCheck); });
-    });
+//    $('#dataTable_consulta>tbody>tr').click(function(){
+//        selecionaLinha(this);
+//    });
+//    $('#seleciona_tudo').click(function(){
+//        var oTable = document.getElementById('dataTable_consulta');
+//        var aLinha = oTable.getElementsByTagName('tr');
+//        var bCheck = this.checked;
+//        this.checked = !bCheck;
+//        $.each(aLinha, function(){ selecionaLinha(this, bCheck); });
+//    });
     $('#dataTable_consulta').DataTable({
         "order": [getOrderForConsulta()],
         "dom": '<"top"f>rt<"bottom"lp><"clear">'
@@ -25,7 +25,7 @@ function carregaArquivos(){
 }
 
 function getOrderForConsulta(){
-    return [2, "asc"];
+    return [1, "asc"];
 }
 
 function retornaItens(){

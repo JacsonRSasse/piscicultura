@@ -7,9 +7,8 @@
         <div class="row" style="position: relative;">                    
             <div class="col l12 m12 s12">
                 <div class="card" style="display: table; width: 100%;">
-                    <div class="area_botoes_acoes">
+<!--                    <div class="area_botoes_acoes">
                         <div class="acoes_com_grid">
-                            <!--<a  class="waves-effect waves-light btn-small disabled">Visualizar</a>-->
                             <a class="waves-effect waves-light btn-small disabled">Deferir</a>
                             <a class="waves-effect waves-light btn-small disabled">Indeferir</a>
                             <a class="waves-effect waves-light btn-small disabled dropdown-trigger" data-target="dropdown_detalhes">Detalhes</a>
@@ -19,21 +18,22 @@
                                 <li><a href="#!">Membro</a></li>
                             </ul>
                         </div>
-                    </div>
+                    </div>-->
                     <table id="dataTable_consulta" class="consulta_padrao compact centered cell-border highlight">
                         <thead>
                             <tr>
-                                <th style="width: 40px;" class="sorting_desc_disabled ">
+<!--                                <th style="width: 40px;" class="sorting_desc_disabled ">
                                     <label>
                                         <input id="seleciona_tudo" type="checkbox" />
                                         <span></span>
                                     </label>
-                                </th>
+                                </th>-->
 
                                 <th>Número</th>
                                 <th>Solicitante</th>
                                 <th>Data Inicio</th>
                                 <th>Data Devolução</th>
+                                <th>Ações</th>
                             </tr>
                         </thead>
 
@@ -41,16 +41,21 @@
                             @if(isset($aSolicitacoes) && count($aSolicitacoes))
                             @foreach($aSolicitacoes as $oSolicitacao)
                             <tr>
-                                <td>
+<!--                                <td>
                                     <label>
                                         <input type="checkbox" />
                                         <span></span>
                                     </label>
-                                </td>
+                                </td>-->
                                 <td id="alunumero_{{$oSolicitacao->getNumero()}}">{{$oSolicitacao->getNumero()}}</td>
                                 <td>{{$oSolicitacao->getMembroFromAluguel->getPessoaFromMembro->getNomeRazao()}}</td>
                                 <td>{{$oSolicitacao->getDataInicio()}}</td>
                                 <td>{{$oSolicitacao->getDataFim()}}</td>
+                                <td>
+                                    <a class="waves-effect waves-light btn-small green" title="Deferir"><i class="material-icons">check</i></a>
+                                    <a class="waves-effect waves-light btn-small red" title="Indeferir"><i class="material-icons">close</i></a>
+                                    <a class="waves-effect waves-light btn-small">Detalhes</a>
+                                </td>
                             </tr>
                             @endforeach
                             @else
