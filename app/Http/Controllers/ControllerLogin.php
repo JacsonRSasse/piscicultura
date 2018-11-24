@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
-use App\User;
-use App\Pessoa;
+use App\Models\User;
+use App\Models\Pessoa;
 
 class ControllerLogin extends Controller
 {
@@ -22,7 +22,7 @@ class ControllerLogin extends Controller
             $aPessoa = Pessoa::where('pesemail', $dados['usuario'])->get();
             if(count($aPessoa)){
                 foreach($aPessoa as $oPessoa){
-                    $iCodigoUsuario = $oPessoa->getUsuarioFromPessoa->getCodigo();
+                    $iCodigoUsuario = $oPessoa->getUsuarioFromPessoa->pescodigo;
                 }
             }
         } else if(is_numeric($dados['usuario'])){
@@ -30,7 +30,7 @@ class ControllerLogin extends Controller
         }
         if($iCodigoUsuario) {
             if(Auth::attempt(['usucodigo' => $iCodigoUsuario, 'password' => $dados['senha']])){
-                switch (auth()->user()->getTipo()) {
+                switch (auth()->user()->usutipo) {
                     case User::TIPO_PRODUTOR:
                         return redirect()->route('produtorIndex');
                     case User::TIPO_ASSOCIACAO:

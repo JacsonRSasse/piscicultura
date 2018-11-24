@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Aluguel;
+use App\Models\Aluguel;
 use Illuminate\Support\Facades\DB;
 
 class ControllerAssociacao extends ControllerItemMenuAssociacao {
@@ -16,12 +16,12 @@ class ControllerAssociacao extends ControllerItemMenuAssociacao {
     function getViewSolicitacoesAluguel(){
         $aItensMenu = $this->getItensMenu();
         $this->setPaginaAtiva($aItensMenu, self::PAG_SOLICITACAO_ALUGUEL);
-        $iCodAssociacao = auth()->user()->getPessoaFromUsuario->getMembroFromPessoa->getAssociacaoFromMembro->getCodigo();
+        $iCodAssociacao = auth()->user()->pessoa->membro->associacao->asccodigo;
         $aSolicitacoes = Aluguel::join('tbmembro', 'tbmembro.memcodigo', '=', 'tbaluguel.memcodigo')
                             ->join('tbassociacao', 'tbassociacao.asccodigo', '=', 'tbmembro.asccodigo')
                             ->join('tbpessoa', 'tbpessoa.pescodigo', '=', 'tbmembro.pescodigo')
+                            ->whereIn('alustatus', array(Aluguel::STATUS_ABERTO_SOLICITACAO, Aluguel::STATUS_EM_ANDAMENTO, Aluguel::STATUS_NA_FILA))
                             ->where([
-                                    ['alustatus', Aluguel::STATUS_ABERTO_SOLICITACAO],
                                     ['tbassociacao.asccodigo', $iCodAssociacao]
                                 ])->get();
                
@@ -37,7 +37,7 @@ class ControllerAssociacao extends ControllerItemMenuAssociacao {
             
             foreach($oAluguel->getEquipamentosFromAluguel as $oEquipamento){
                 $aRetorno[] = [
-                    'eqpcodigo' => $oEquipamento->getCodigo(),
+                    'eqpcodigo' => $oEquipamento->eqpcodigo,
                 ];
             }
         }

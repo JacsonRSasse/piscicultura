@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Equipamento;
-use App\Aluguel;
-use App\FilaAluguel;
+use App\Models\Equipamento;
+use App\Models\Aluguel;
+use App\Models\FilaAluguel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -42,53 +42,51 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
     public function getViewAlugarEquipamento(){
         $aItensMenu = $this->getItensMenu();
         $this->setPaginaAtiva($aItensMenu, self::PAG_ALUGAR_EQUIPAMENTO); 
-        $iAssociacao = auth()->user()->getPessoaFromUsuario->getMembroFromPessoa->getAssociacaoFromMembro->getCodigo();
+        $iAssociacao = auth()->user()->pessoa->membro->associacao->asccodigo;
         $aEquipamentos = Equipamento::where('asccodigo', '=', $iAssociacao)->get();
         return view('produtor.alugar_equipamento', compact('aItensMenu', 'aEquipamentos'));
     }
     
     public function addItemCarrinho(Request $req){
-        foreach ($req->selecionados as $iSelecionado) {
-            if(!$this->verificaEquipamentoAlugado($iSelecionado) || $req->ignoreAlugado != 'false'){
-                $aItens = session('carrinhoEquipamento', false);
-                $bAdd = false;
-                if(!$aItens) {
-                    session()->put('carrinhoEquipamento', [$iSelecionado => 1]);
-                    $bAdd = true;
-                } else {
-                    if(isset($aItens[$iSelecionado])){
-                        if($this->verificaQuantidadeDisponivel($aItens[$iSelecionado], $iSelecionado)){
-                            $aItens[$iSelecionado] += 1;     
-                            $bAdd = true;
-                        }
-                    } else {
-                        $aItens[$iSelecionado] = 1;
+        $xDados = $req->all();
+        if(!$this->verificaEquipamentoAlugado($xDados['eqpcodigo'])){
+            $aItens = session('carrinhoEquipamento', false);
+            $bAdd = false;
+            if(!$aItens) {
+                session()->put('carrinhoEquipamento', [$xDados['eqpcodigo'] => 1]);
+                $bAdd = true;
+            } else {
+                if(isset($aItens[$xDados['eqpcodigo']])){
+                    if($this->verificaQuantidadeDisponivel($aItens[$xDados['eqpcodigo']], $xDados['eqpcodigo'])){
+                        $aItens[$xDados['eqpcodigo']] += 1;     
                         $bAdd = true;
                     }
-                    session()->put('carrinhoEquipamento', $aItens);
-                }
-                if($bAdd){
-                    $sMsg = 'Itens adicionados ao carrinho!';
                 } else {
-                    $sMsg = 'Itens já adicionados ao carrinho!';                    
+                    $aItens[$xDados['eqpcodigo']] = 1;
+                    $bAdd = true;
                 }
-                $aRetorno = [
-                    'msg' => $sMsg,
-                    'equipAlugado' => false
-                ];                    
-            } else {
-                $aRetorno = [
-                        'msg' => '',
-                        'equipAlugado' => true
-                    ];
+                session()->put('carrinhoEquipamento', $aItens);
             }
+            if($bAdd){
+                $sMsg = 'Itens adicionados ao carrinho!';
+            } else {
+                $sMsg = 'Itens já adicionados ao carrinho!';                    
+            }
+            $aRetorno = [
+                'msg' => $sMsg,
+                'equipAlugado' => false
+            ];                    
+        } else {
+            $aRetorno = [
+                    'msg' => '',
+                    'equipAlugado' => true
+                ];
         }
         return response()->json($aRetorno);
     }
     
-    private function verificaEquipamentoAlugado($sChave){
-        $aChave = explode('_', $sChave);
-        $oEquipamento = Equipamento::find($aChave[1]);
+    private function verificaEquipamentoAlugado($iEquip){
+        $oEquipamento = Equipamento::find($iEquip);
         return $oEquipamento->isAlugado();
     }
     
@@ -105,12 +103,10 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
         $aCarrinho = session('carrinhoEquipamento');
         if($aCarrinho){
             foreach ($aCarrinho as $indice => $quantidade) {
-                $aChaves = explode('_', $indice);
-
-                if($oEquipamento = Equipamento::find($aChaves[1])){
+                if($oEquipamento = Equipamento::find($indice)){
                     $oItem = new \stdClass();
-                    $oItem->codigo = $oEquipamento->getCodigo();
-                    $oItem->nome = $oEquipamento->getNome();
+                    $oItem->codigo = $oEquipamento->eqpcodigo;
+                    $oItem->nome = $oEquipamento->eqpnome;
                     $oItem->quantidade = $quantidade;
                     $aItens[] = $oItem;
                 }
@@ -124,12 +120,11 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
     }
     
     public function removeItemCarrinho(Request $req){
-        foreach ($req->selecionados as $iSelecionado) {
-            $aItens = session('carrinhoEquipamento', false);
-            if(isset($aItens[$iSelecionado])){
-                unset($aItens[$iSelecionado]);
-                session()->put('carrinhoEquipamento', $aItens);
-            }
+        $xDados = $req->all();
+        $aItens = session('carrinhoEquipamento', false);
+        if(isset($aItens[$xDados['eqpcodigo']])){
+            unset($aItens[$xDados['eqpcodigo']]);
+            session()->put('carrinhoEquipamento', $aItens);
         }
         return response()->json(true);
     }
@@ -152,7 +147,7 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
             DB::beginTransaction();
             $oAluguel = new Aluguel();
             $oAluguel->setStatus(Aluguel::STATUS_ABERTO_SOLICITACAO);
-            $oAluguel->setMembro(auth()->user()->getPessoaFromUsuario->getMembroFromPessoa->getCodigo());
+            $oAluguel->setMembro(auth()->user()->pessoa->membro->memcodigo);
             $oAluguel->setDataInicio($dados['dataDe']);
             $oAluguel->setDataFim($dados['dataAte']);
             
@@ -160,14 +155,13 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
             $aDados = [];
             $bVaiPraFila = false;
             foreach($aItens as $xIndice => $xQtd){
-                $aChave = explode('_', $xIndice);
-                if($oEquipamento = Equipamento::find($aChave[1])){
-                    if((bool)$this->getEquipamentoEmTransacaoAluguel($oEquipamento->getCodigo())){
+                if($oEquipamento = Equipamento::find($xIndice)){
+                    if((bool)$this->getEquipamentoEmTransacaoAluguel($oEquipamento->eqpcodigo)){
                         $bVaiPraFila = true;
                     }
-                    $xValor = $xValor + $oEquipamento->getPrecoDia() * $xQtd;
+                    $xValor = $xValor + $oEquipamento->eqpprecodia * $xQtd;
                     $aDados[] = [
-                        'codigo' => $aChave[1],
+                        'codigo' => $xIndice,
                         'qtd' => $xQtd
                     ];
                 }                
@@ -179,8 +173,7 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
                 }
                 if($bVaiPraFila){
                     $oFila = new FilaAluguel();
-                    $oFila->setAluguel($oAluguel->getNumero());
-                    $bDeuBoa = $oFila->save();
+                    $bDeuBoa = $oFila->save($oAluguel->alunumero);
                     $oAluguel->setStatus(Aluguel::STATUS_NA_FILA);
                     $oAluguel->update();
                 }

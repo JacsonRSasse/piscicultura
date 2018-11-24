@@ -20,7 +20,7 @@ use App\User;
         @yield('comportamentos')
     </head>
     <body>
-    @switch(auth()->user()->getTipo())
+    @switch(auth()->user()->usutipo)
         @case( 1 )
             @include('produtor.navbar_produtor')
             @break
@@ -32,6 +32,5 @@ use App\User;
             @break
     @endswitch
     @yield('main')
-    
     </body>
 </html>

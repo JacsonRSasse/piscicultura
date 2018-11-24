@@ -100,7 +100,6 @@ Route::get(
         '/teste',
         function(){
             
-            dd(bcrypt('teste'));
         });
 
 

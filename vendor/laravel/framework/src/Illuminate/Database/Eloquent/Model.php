@@ -1595,10 +1595,22 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     /**
      * When a model is being unserialized, check if it needs to be booted.
      *
-     * @return void
+     * @return voidgetDescriptionItem
      */
     public function __wakeup()
     {
         $this->bootIfNotBooted();
+    }
+
+    private function getList($name) {
+        $new_name = 'getLista' . $name;
+        if(method_exists($this, $new_name)){
+            return $this->$new_name();
+        }
+    }
+
+    public function getDescriptionItem($list_name, $id_item){
+        $aItems = $this->getList($list_name);
+        return $aItems[$id_item];
     }
 }

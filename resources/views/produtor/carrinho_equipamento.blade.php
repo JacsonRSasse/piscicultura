@@ -12,19 +12,11 @@
                             <a class="waves-effect waves-light btn-small" href="{{route('cancelaPedido')}}">Cancelar</a>
                             <a class="waves-effect waves-light btn-small modal-trigger" href="#modal_data_final">Finalizar</a>
                         </div>
-                        <div class="acoes_com_grid">
-                            <a class="waves-effect waves-light btn-small disabled" onclick="onClickExcluiItemPedido()">Excluir</a>
-                        </div>
                     </div>
                     <table id="dataTable_consulta" class="consulta_padrao centered highlight">
                         <thead>
                             <tr>
-                                <th>
-                                    <label>
-                                        <input id="seleciona_tudo" type="checkbox" />
-                                        <span></span>
-                                    </label>
-                                </th>
+                                <th class="sorting_desc_disabled">Ações</th>
                                 <th>Código</th>
                                 <th>Nome</th>
                                 <th>Quantidade</th>
@@ -36,10 +28,12 @@
                             @foreach($aEquipamentos as $oEquipamento)
                             <tr>
                                 <td>
-                                    <label>
-                                        <input type="checkbox" />
-                                        <span></span>
-                                    </label>
+                                    <a class="waves-effect waves-light btn-small red" 
+                                       title="Remover do Carrinho" 
+                                       onclick="onClickExcluiItemPedido({{ $oEquipamento->codigo }} )"
+                                       >
+                                        <i class="material-icons">close</i>
+                                    </a>
                                 </td>
                                 <td id="eqpcodigo_{{$oEquipamento->codigo}}">{{ $oEquipamento->codigo }}</td>
                                 <td>{{ $oEquipamento->nome }}</td>
@@ -100,13 +94,10 @@
         @endif
     });
     
-    function onClickExcluiItemPedido(){
-        var aSelecionados = retornaItens(); 
-        if (aSelecionados.length > 0) {
-            $.post('{{ route('removeItemCarrinho') }}', {'selecionados': aSelecionados, _token: '{{csrf_token()}}'}, function (data) {
-                window.location='{{route('carrinhoEquipamentos')}}';
-            });
-        }        
+    function onClickExcluiItemPedido(iCod){
+        $.post('{{ route('removeItemCarrinho') }}', {'eqpcodigo': iCod, _token: '{{csrf_token()}}'}, function (data) {
+            window.location='{{route('carrinhoEquipamentos')}}';
+        });
     }
     
     

@@ -2,7 +2,7 @@
     <a id="logo-usuario">
         <i class="material-icons">person</i>
         @auth
-            {{auth()->user()->getPessoaFromUsuario->getNomeRazao()}}
+            {{auth()->user()->pessoa->pesnomerazao}}
         @endauth
     </a>
 </li>
