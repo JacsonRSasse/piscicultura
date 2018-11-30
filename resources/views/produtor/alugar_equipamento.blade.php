@@ -62,7 +62,6 @@
 
     function onClickAdicionaAoPedido(iCod, bAlugado) {
         var bResp = false;
-        debugger;
         if(bAlugado){
             var bResp = confirm('O equipamento solicitado encontra-se alugado. \nDeseja adiciona-lo mesmo assim à lista de pedidos? \nSeu pedido será posto na fila de espera e você será notificado quando o equipamento estiver disponível.');
             if(!bResp){

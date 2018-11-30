@@ -25,7 +25,7 @@
                                 <td>
                                     <a class="waves-effect waves-light btn-small green" title="Deferir"><i class="material-icons">check</i></a>
                                     <a class="waves-effect waves-light btn-small red" title="Indeferir"><i class="material-icons">close</i></a>
-                                    <a class="waves-effect waves-light btn-small">Detalhes</a>
+                                    <a class="waves-effect waves-light btn-small" onclick="carregaModalDetalhesPedido({{$oSolicitacao}})">Detalhes</a>
                                 </td>
                                 <td>{{$oSolicitacao->alunumero}}</td>
                                 <td>{{$oSolicitacao->membro->pessoa->pesnomerazao}}</td>
@@ -44,18 +44,51 @@
 
                     </table>
 
-                    <div id="modal_detalhes_pedido" class="modal">
-                        <div class="modal-content">
-                            <h4>Equipamentos Solicitados</h4>
-                            <div id="gridEquipamentos">
-                                
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal" id="modal_detalhes">
+            <div class="row" style="position: relative;">
+                <div class="col l12 m12 s12">
+                    <ul class="tabs tabs-fixed-width">
+                        <li class="tab"><a href="#dados_produtor">Produtor</a></li>
+                        <li class="tab"><a href="#dados_equipamentos">Equipamentos</a></li>
+                    </ul>
+                    <div id="dados_produtor">
+                        <div class="row">
+                            <div class="input-field col s12 m6">
+                                <input type="text" id="pesnomerazao" disabled="">
+                                <label id="label_pesnomerazao" for="#pesnomerazao">Membro</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <select id="memsituacao" disabled="">
+                                    <option value="1">Em Dia</option>
+                                    <option value="2">Com Débitos em Aberto</option>
+                                    <option value="3">Com Débitos Vencidos</option>
+                                </select>
+                                <label for="#memsituacao">Situação</label>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Ok</a>
-                        </div>
+                    </div>
+                    <div id="dados_equipamentos">
+                        <table id="equipamentos_solicitados">
+                            <thead>
+                                <tr>
+                                    <td>Código</td>
+                                    <td>Nome</td>
+                                    <td>Situação</td>
+                                </tr>
+                            </thead>
+                            <tbody id="body_tabela_equip">
+                                
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="modal-close waves-effect btn-flat">Ok</a>
             </div>
         </div>
     </div>
@@ -69,12 +102,28 @@
         return [1, 'asc'];
     }
 
-    function carregaModalDetalhesPedido(){
-        var aSelecionados = retornaItens();
-        $.get('{{route('buscaDadosSolicitacaoAluguel')}}', {'solicitacao': aSelecionados[0]}, function(xRetorno) {
-            debugger;
-            xRetorno;
-        });
+    function carregaModalDetalhesPedido(oSolicitacao){
+        document.getElementById('pesnomerazao').value = oSolicitacao.membro.pessoa.pesnomerazao;
+        document.getElementById('label_pesnomerazao').className = 'active';
+        document.getElementById('memsituacao').value = oSolicitacao.memsituacao;
+
+        var bodyTable = document.getElementById('body_tabela_equip');
+        for(let i = 0; i < oSolicitacao.equipamentos.length; i++){
+            let td_codigo = document.createElement('td');
+            td_codigo.innerText = oSolicitacao.equipamentos[i].eqpcodigo;
+            let td_nome = document.createElement('td');
+            td_nome.innerText = oSolicitacao.equipamentos[i].eqpnome;
+            let td_status = document.createElement('td');
+            td_status.innerText = oSolicitacao.equipamentos[i].eqpstatus;
+
+            let tr = document.createElement('tr');
+            tr.appendChild(td_codigo);
+            tr.appendChild(td_nome);
+            tr.appendChild(td_status);
+            bodyTable.appendChild(tr);
+        }
+
+        $('#modal_detalhes').modal('open');
     }
 
 </script>

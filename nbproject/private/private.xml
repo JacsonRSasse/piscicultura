@@ -7,6 +7,7 @@
             <file>file:/C:/xampp/htdocs/piscicultura/app/Models/Aluguel.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/app/Http/Controllers/ControllerAssociacao.php</file>
             <file>file:/C:/xampp/htdocs/piscicultura/routes/web.php</file>
+            <file>file:/C:/xampp/htdocs/piscicultura/resources/views/associacao/solicitacao_aluguel.blade.php</file>
         </group>
     </open-files>
 </project-private>

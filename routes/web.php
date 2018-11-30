@@ -73,7 +73,7 @@ Route::group(['middleware' => 'auth'], function(){
         
         Route::get(
                 '/getDadosSolicitacaoAluguel',
-                ['as' => 'buscaDadosSolicitacaoAluguel', 'uses' => 'ControllerAssociacao@getDadosSolicitacaoAluguel']);
+                ['as' => 'buscaSituacoesForLista', 'uses' => 'ControllerAssociacao@getSituacoesForAluguel']);
         
     });
     

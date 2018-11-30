@@ -8,6 +8,8 @@ function carregaArquivos(){
     $('.dropdown-trigger').dropdown();
     $('.sidenav').sidenav();
     $('.datepicker').datepicker();
+    $('.tabs').tabs();
+    $('select').formSelect();
 //    $('#dataTable_consulta>tbody>tr').click(function(){
 //        selecionaLinha(this);
 //    });

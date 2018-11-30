@@ -276,3 +276,21 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 #dropdown_detalhes li>a{
     color: #0091ea;
 }
+
+.tabs .tab a:focus,
+.tabs .tab a:focus.active {
+    background-color: transparent;
+}
+
+.tabs .tab a:hover, 
+.tabs .tab a.active {
+    color: #0091ea;
+}
+
+.tabs .tab a {
+    color: #0091ea;
+}
+
+.tabs .indicator {
+    background-color: #0091ea;
+}
