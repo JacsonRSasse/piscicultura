@@ -72,10 +72,14 @@ Route::group(['middleware' => 'auth'], function(){
                 ['as' => 'solicitacaoAluguel', 'uses' => 'ControllerAssociacao@getViewSolicitacoesAluguel']);
         
         Route::get(
-                '/getDadosSolicitacaoAluguel',
-                ['as' => 'buscaSituacoesForLista', 'uses' => 'ControllerAssociacao@getSituacoesForAluguel']);
+                '/busca_status_equipamento',
+                ['as' => 'buscaStatusEquipamento', 'uses' => 'ControllerEquipamento@getStatusEquipamentos']);
+        Route::post(
+                '/responde_solicitacao_aluguel',
+                ['as' => 'respondeSolicitacaoAluguel', 'uses' => 'ControllerAssociacao@setRespostaSolicitacao']);
         
     });
+
     
     Route::prefix('comprador')->group(function(){
         

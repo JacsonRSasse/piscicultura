@@ -13,7 +13,7 @@
                             <a class="waves-effect waves-light btn-small modal-trigger" href="#modal_data_final">Finalizar</a>
                         </div>
                     </div>
-                    <table id="dataTable_consulta" class="consulta_padrao centered highlight">
+                    <table id="dataTable_consulta" class="consulta_padrao compact centered cell-border highlight">
                         <thead>
                             <tr>
                                 <th class="sorting_desc_disabled">Ações</th>

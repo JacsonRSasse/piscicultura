@@ -23,14 +23,14 @@
                             @foreach($aSolicitacoes as $oSolicitacao)
                             <tr>
                                 <td>
-                                    <a class="waves-effect waves-light btn-small green" title="Deferir"><i class="material-icons">check</i></a>
-                                    <a class="waves-effect waves-light btn-small red" title="Indeferir"><i class="material-icons">close</i></a>
+                                    <a class="waves-effect waves-light btn-small green" title="Deferir" onclick="respondeSolicitacao({{$oSolicitacao->alunumero}}, true)"><i class="material-icons">check</i></a>
+                                    <a class="waves-effect waves-light btn-small red" title="Indeferir" onclick="respondeSolicitacao({{$oSolicitacao->alunumero}}, false)"><i class="material-icons">close</i></a>
                                     <a class="waves-effect waves-light btn-small" onclick="carregaModalDetalhesPedido({{$oSolicitacao}})">Detalhes</a>
                                 </td>
                                 <td>{{$oSolicitacao->alunumero}}</td>
                                 <td>{{$oSolicitacao->membro->pessoa->pesnomerazao}}</td>
-                                <td>{{$oSolicitacao->aludatainicio}}</td>
-                                <td>{{$oSolicitacao->aludatafim}}</td>
+                                <td>{{date_format(date_create_from_format('Y-m-d', $oSolicitacao->aludatainicio), 'd/m/Y')}}</td>
+                                <td>{{date_format(date_create_from_format('Y-m-d', $oSolicitacao->aludatafim), 'd/m/Y')}}</td>
                             </tr>
                             @endforeach
                             @else
@@ -57,6 +57,11 @@
                     </ul>
                     <div id="dados_produtor">
                         <div class="row">
+                            <div class="input-field col s12 m6">
+                                <input type="text" id="alunumero" disabled="">
+                                <label for="alunumero" id="label_alunumero">Número Aluguel</label>
+                            </div>
+
                             <div class="input-field col s12 m6">
                                 <input type="text" id="pesnomerazao" disabled="">
                                 <label id="label_pesnomerazao" for="#pesnomerazao">Membro</label>
@@ -103,18 +108,35 @@
     }
 
     function carregaModalDetalhesPedido(oSolicitacao){
+        var aStatus = [];
+
+        $.ajax({
+            url: '{{ route('buscaStatusEquipamento') }}',
+            type : 'get',
+            async : false,
+            success :  function(aRetorno){
+                $.each(aRetorno, function(indice, valor){
+                    aStatus[indice] = valor;
+                });
+            }
+        });
+        document.getElementById('alunumero').value = oSolicitacao.alunumero;
+        document.getElementById('label_alunumero').className = 'active';
         document.getElementById('pesnomerazao').value = oSolicitacao.membro.pessoa.pesnomerazao;
         document.getElementById('label_pesnomerazao').className = 'active';
         document.getElementById('memsituacao').value = oSolicitacao.memsituacao;
 
         var bodyTable = document.getElementById('body_tabela_equip');
+        $.each(bodyTable.children, function(indice, valor){
+            bodyTable.removeChild(valor);
+        });
         for(let i = 0; i < oSolicitacao.equipamentos.length; i++){
             let td_codigo = document.createElement('td');
             td_codigo.innerText = oSolicitacao.equipamentos[i].eqpcodigo;
             let td_nome = document.createElement('td');
             td_nome.innerText = oSolicitacao.equipamentos[i].eqpnome;
             let td_status = document.createElement('td');
-            td_status.innerText = oSolicitacao.equipamentos[i].eqpstatus;
+            td_status.innerText = aStatus[oSolicitacao.equipamentos[i].eqpstatus];
 
             let tr = document.createElement('tr');
             tr.appendChild(td_codigo);
@@ -124,6 +146,10 @@
         }
 
         $('#modal_detalhes').modal('open');
+    }
+
+    function respondeSolicitacao(alunumero, deferido){
+        $.post('{{route('respondeSolicitacaoAluguel')}}', {'alunumero' : alunumero, 'deferido' : deferido, _token: '{{csrf_token()}}'}, function(){});
     }
 
 </script>

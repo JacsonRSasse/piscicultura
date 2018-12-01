@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Aluguel;
-use App\Models\Membro;
 use Illuminate\Support\Facades\DB;
 
 class ControllerAssociacao extends ControllerItemMenuAssociacao {
@@ -28,9 +27,10 @@ class ControllerAssociacao extends ControllerItemMenuAssociacao {
                                 ->get();       
         return view('associacao.solicitacao_aluguel', compact('aItensMenu', 'aSolicitacoes'));
     }
-    
-    public function getSituacoesForAluguel(){
-        $oMembro = new Membro();
-        return response()->json($oMembro->getListaSituacaoMembro());
+
+    function setRespostaSolicitacao(Request $req){
+        $aDados = $req->all();
+        
     }
+    
 }

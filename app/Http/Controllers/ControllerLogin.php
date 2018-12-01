@@ -22,7 +22,7 @@ class ControllerLogin extends Controller
             $aPessoa = Pessoa::where('pesemail', $dados['usuario'])->get();
             if(count($aPessoa)){
                 foreach($aPessoa as $oPessoa){
-                    $iCodigoUsuario = $oPessoa->getUsuarioFromPessoa->pescodigo;
+                    $iCodigoUsuario = $oPessoa->pescodigo;
                 }
             }
         } else if(is_numeric($dados['usuario'])){

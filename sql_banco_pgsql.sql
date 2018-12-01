@@ -61,7 +61,7 @@ CREATE TABLE public.tbpessoa (
                 pescpfcnpj VARCHAR(20) NOT NULL,
                 pesrg VARCHAR(14) NOT NULL,
                 pestipo SMALLINT NOT NULL,
-                pesemail VARCHAR(30),
+                pesemail VARCHAR(30) NOT NULL,
                 CONSTRAINT tbpessoa_pk PRIMARY KEY (pescodigo)
 );
 
