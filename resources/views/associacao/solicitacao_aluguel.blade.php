@@ -148,8 +148,20 @@
         $('#modal_detalhes').modal('open');
     }
 
+    $(document).ready(function(){
+        @if($errors->has('equipamento'))
+        @endif
+    });
+
     function respondeSolicitacao(alunumero, deferido){
-        $.post('{{route('respondeSolicitacaoAluguel')}}', {'alunumero' : alunumero, 'deferido' : deferido, _token: '{{csrf_token()}}'}, function(){});
+        $.post('{{route('respondeSolicitacaoAluguel')}}', {'alunumero' : alunumero, 'deferido' : deferido, _token: '{{csrf_token()}}'}, function(xResult){
+            if(xResult['mensagem']){
+                M.toast({html: xResult['mensagem'], classes: "rounded"});
+            }
+            if(xResulta['recarrega']){
+                location.reload();
+            }
+        });
     }
 
 </script>

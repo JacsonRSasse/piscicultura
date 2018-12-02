@@ -41,6 +41,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post(
                 '/add_item_carrinho',
                 ['as' => 'addItemCarrinho', 'uses' => 'ControllerProdutor@addItemCarrinho']);
+        Route::get(
+                '/solicitacoes_aluguel',
+                ['as' => 'solicitacaoAluguelProdutor', 'uses' => 'ControllerProdutor@getViewSolicitacoesAluguel']);
         
         Route::prefix('itens_pedido')->group(function(){
             

@@ -31,21 +31,24 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
         return view('produtor.index_produtor', compact('aItensMenu'));
     }
     
-    public function getViewVenderProducao(){
-        $aItensMenu = $this->getItensMenu();
-        $this->setPaginaAtiva($aItensMenu, self::PAG_VENDER_PRODUCAO);
-        $oUsuario = new \stdClass();
-        $oUsuario->nome = 'Nome do Usuário';
-        return view('produtor.vender_producao', compact('aItensMenu', 'oUsuario'));
-    }
-    
     public function getViewAlugarEquipamento(){
         $aItensMenu = $this->getItensMenu();
-        $this->setPaginaAtiva($aItensMenu, self::PAG_ALUGAR_EQUIPAMENTO); 
+        $this->setPaginaAtiva($aItensMenu, self::PAG_MAN_ALUGAR_EQUIPAMENTO); 
         $iAssociacao = auth()->user()->pessoa->membro->associacao->asccodigo;
         $aEquipamentos = Equipamento::where('asccodigo', '=', $iAssociacao)->get();
         return view('produtor.alugar_equipamento', compact('aItensMenu', 'aEquipamentos'));
     }
+    
+    public function getViewSolicitacoesAluguel(){
+        $aItensMenu = $this->getItensMenu();
+        $this->setPaginaAtiva($aItensMenu, self::PAG_CON_SOLIC_ALUGUEL);
+        $aAluguel = Aluguel::with(['filaAluguel'])->where('memcodigo', '=', auth()->user()->pessoa->membro->memcodigo)->get();
+        return view('produtor.solicitacao_aluguel', compact('aItensMenu', 'aAluguel'));
+    }
+    
+    /*---------------------------------------------------------------------------------------------------------------------*/
+    /*|                                            MÉTODOS DE PROCESSAMENTO                                               |*/
+    /*---------------------------------------------------------------------------------------------------------------------*/
     
     public function addItemCarrinho(Request $req){
         $xDados = $req->all();
@@ -98,7 +101,7 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
         
     public function getViewCarrinhoEquipamentos($bInseriuAluguel = null){
         $aItensMenu = $this->getItensMenu();
-        $this->setPaginaAtiva($aItensMenu, self::PAG_CARRINHO_EQUIPAMENTO);
+        $this->setPaginaAtiva($aItensMenu, self::PAG_CON_CARRINHO_EQUIPAMENTO);
         $aItens = [];
         $aCarrinho = session('carrinhoEquipamento');
         if($aCarrinho){
@@ -151,7 +154,7 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
         if($aItens){
             DB::beginTransaction();
             $oAluguel = new Aluguel();
-            $oAluguel->alustatus = Aluguel::STATUS_NA_FILA;
+            $oAluguel->alustatus = Aluguel::STATUS_ABERTO_SOLICITACAO;
             $oAluguel->memcodigo = (auth()->user()->pessoa->membro->memcodigo);
             $oAluguel->aludatainicio = ($dados['dataDe']);
             $oAluguel->aludatafim = ($dados['dataAte']);
@@ -177,8 +180,6 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
                 $oFila = new FilaAluguel();
                 $oFila->alunumero = $oAluguel->alunumero;
                 $bDeuBoa = $oFila->save();
-                $oAluguel->alustatus = (Aluguel::STATUS_NA_FILA);
-                $oAluguel->update();
             }
             if($bDeuBoa){
                 session()->put('carrinhoEquipamento', []);
@@ -188,32 +189,6 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
             }
         }
         return $this->getViewCarrinhoEquipamentos($bDeuBoa);
-    }
-
-    private function getEquipamentoEmTransacaoAluguel($iEquip) {
-        $aItens = DB::table('tbequipamento')
-                        ->select(DB::raw('1 as em_transacao'))
-                        ->join('tbequipaluguel', 'tbequipaluguel.eqpcodigo', '=', 'tbequipamento.eqpcodigo')
-                        ->join('tbaluguel', 'tbaluguel.alunumero', '=', 'tbequipaluguel.alunumero')
-                        ->whereIn('tbaluguel.alustatus', array(Aluguel::STATUS_ABERTO_SOLICITACAO, Aluguel::STATUS_EM_ANDAMENTO, Aluguel::STATUS_NA_FILA))
-                        ->where('tbequipaluguel.eqpcodigo', $iEquip)->get();
-        foreach($aItens as $oItem){
-            if($oItem && $oItem->em_transacao){
-                return (int)$oItem->em_transacao;
-            } 
-        } 
-        return false;
-    }
-    
-    private function trocaStatusEquipamento($iEquip, $xQtd){
-        $oEquipamento = Equipamento::find($iEquip);
-        $iQtd = $this->getQuantidadeAlugado($iEquip);
-        if($oEquipamento->getQuantidade() == $iQtd->quantidade_alugada + $xQtd) {
-            $oEquipamento->setStatus(Equipamento::STATUS_ALUGADO);
-        } else {
-            $oEquipamento->setStatus(Equipamento::STATUS_ALUGADO_PARCIAL);
-        }
-        $oEquipamento->update();
     }
     
 }
