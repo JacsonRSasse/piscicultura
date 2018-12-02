@@ -42,7 +42,7 @@ class Aluguel extends Model {
     
     function setRelacionamentoTabelaTerciaria($iEquipamento, $iQtd = false){
         $oEquipAluguel = new EquipamentoAluguel();
-        return $oEquipAluguel->save($iEquipamento, $this->alunumero, (!$iQtd ? 1 : $iQtd));
+        return $oEquipAluguel->save([$iEquipamento, $this->alunumero, (!$iQtd ? 1 : $iQtd)]);
     }
     
 }

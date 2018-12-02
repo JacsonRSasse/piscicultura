@@ -13,27 +13,23 @@
                             {{ csrf_field() }}
                             <div class="input-field">
                                 <i class="material-icons prefix">account_circle</i>
-                                <input type="text" name="usuario" id="usuario">
+                                <input type="text" name="usuario" value="{{old('usuario')}}" id="usuario">
                                 <label for="usuario">Usuário</label>
                             </div>
+                            {!! $errors->first('usuario', '<label style="color: red;">:message</label>') !!}
 
                             <div class="input-field">
                                 <i class="material-icons prefix">vpn_key</i>
                                 <input type="password" name="senha" id="senha">
                                 <label for="senha">Senha</label>
                             </div>
-                            @if(isset($erro) && $erro)
-                            <div class="center">
-                                <label style="color: red;">Usuário ou Senha incorretos</label>                               
-                            </div>
-                            @endif
+                            {!! $errors->first('senha', '<label style="color: red;">:message</label>') !!}
+                            
                             <div class="center botao_submit">
                                 <button class="btn waves-effect waves-light" type="submit" name="action">Login
                                     <i class="material-icons right">send</i>
                                 </button>
                             </div>
-
-
                         </form>
 
                     </div>

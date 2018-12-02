@@ -51,10 +51,6 @@
 
                     </table>
 
-                    @if(isset($bInseriuAluguel) && $bInseriuAluguel)
-                    
-                    @endif
-                    
                     <div id="modal_data_final" class="modal" style="width: 350px;">
                         <div class="modal-content">
                             <h4>Datas</h4>
@@ -91,6 +87,9 @@
             @else
                 M.toast({html: 'Erro na Solicitação de Aluguel', classes: 'rounded'});
             @endif
+        @endif
+        @if($errors->has('data'))
+            M.toast({html: '{{$errors->first("data")}}', classes: "rounded"});
         @endif
     });
     

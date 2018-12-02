@@ -10,12 +10,35 @@ use App\Models\Pessoa;
 class ControllerLogin extends Controller
 {
     
-    function getTelaLogin($erro = false) {
-        return view('login.login', compact('erro'));
+    function getTelaLogin() {
+        return view('login.login');
     }
     
     function doRealizaLogin(Request $req){
-        $dados = $req->all();        
+        $dados = $req->all();
+        $mensagens = [
+            'usuario' => 'Campo Usuário é de preenchimento obrigatório',
+            'senha' => 'Campo Senha é de preenchimento obrigatório'
+        ];
+        $validate = validator($dados, [
+            'usuario' => 'required|string',
+            'senha' => 'required|string'
+        ], [
+            'usuario.required' => $mensagens['usuario'],
+            'senha.required' => $mensagens['senha'],
+        ]);
+        
+        if($validate->fails()){
+            $retorno = [];
+            foreach($validate->failed() as $indice => $valor){
+                $retorno[$indice] = $mensagens[$indice];
+            }
+            if(!$this->isEmail($dados['usuario']) && !is_numeric($dados['usuario'])){
+                $retorno['usuario'] = 'Não foi informado e-mail válido ou código de usuário!';
+            }
+            return back()->withErrors($retorno)->withInput(request(['usuario']));
+        }
+        
         $aPessoa = [];
         $iCodigoUsuario = false;
         if($this->isEmail($dados['usuario'])){
@@ -42,7 +65,7 @@ class ControllerLogin extends Controller
                 }
             }
         }
-        return redirect()->route('login', ['erroLogin']);
+        return back()->withErrors(['usuario' => 'Credenciais informadas estão incorretas'])->withInput(request(['usuario']));
     }
     
     public function doRealizaLogout(){

@@ -125,8 +125,8 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
         if(isset($aItens[$xDados['eqpcodigo']])){
             unset($aItens[$xDados['eqpcodigo']]);
             session()->put('carrinhoEquipamento', $aItens);
+            return response()->json(true);
         }
-        return response()->json(true);
     }
     
     public function cancelaPedido(){
@@ -141,42 +141,44 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
 
     public function finalizaPedido(Request $req){
         $dados = $req->all();
+        
+        if(strtotime($dados['dataAte']) < strtotime($dados['dataDe'])){
+            return back()->withErrors(['data' => 'Data inicial maior que final']);
+        }
+        
         $aItens = session('carrinhoEquipamento', false);
         $bDeuBoa = false;
         if($aItens){
             DB::beginTransaction();
             $oAluguel = new Aluguel();
-            $oAluguel->setStatus(Aluguel::STATUS_ABERTO_SOLICITACAO);
-            $oAluguel->setMembro(auth()->user()->pessoa->membro->memcodigo);
-            $oAluguel->setDataInicio($dados['dataDe']);
-            $oAluguel->setDataFim($dados['dataAte']);
+            $oAluguel->alustatus = Aluguel::STATUS_NA_FILA;
+            $oAluguel->memcodigo = (auth()->user()->pessoa->membro->memcodigo);
+            $oAluguel->aludatainicio = ($dados['dataDe']);
+            $oAluguel->aludatafim = ($dados['dataAte']);
+            
+            $iDifDia =  (int)str_replace('-', '', $dados['dataAte']) - (int) str_replace('-', '', $dados['dataDe']);
             
             $xValor = 0;
             $aDados = [];
-            $bVaiPraFila = false;
             foreach($aItens as $xIndice => $xQtd){
                 if($oEquipamento = Equipamento::find($xIndice)){
-                    if((bool)$this->getEquipamentoEmTransacaoAluguel($oEquipamento->eqpcodigo)){
-                        $bVaiPraFila = true;
-                    }
-                    $xValor = $xValor + $oEquipamento->eqpprecodia * $xQtd;
+                    $xValor = $xValor + $oEquipamento->eqpprecodia * $xQtd * $iDifDia;
                     $aDados[] = [
                         'codigo' => $xIndice,
                         'qtd' => $xQtd
                     ];
                 }                
             }
-            $oAluguel->setValor($xValor);            
+            $oAluguel->aluvalor = ($xValor);            
             if($bDeuBoa = $oAluguel->save()){
                 foreach ($aDados as $xDado){
                     $bDeuBoa = $oAluguel->setRelacionamentoTabelaTerciaria($xDado['codigo'], $xDado['qtd']);
                 }
-                if($bVaiPraFila){
-                    $oFila = new FilaAluguel();
-                    $bDeuBoa = $oFila->save($oAluguel->alunumero);
-                    $oAluguel->setStatus(Aluguel::STATUS_NA_FILA);
-                    $oAluguel->update();
-                }
+                $oFila = new FilaAluguel();
+                $oFila->alunumero = $oAluguel->alunumero;
+                $bDeuBoa = $oFila->save();
+                $oAluguel->alustatus = (Aluguel::STATUS_NA_FILA);
+                $oAluguel->update();
             }
             if($bDeuBoa){
                 session()->put('carrinhoEquipamento', []);
