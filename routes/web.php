@@ -80,6 +80,9 @@ Route::group(['middleware' => 'auth'], function(){
         Route::post(
                 '/responde_solicitacao_aluguel',
                 ['as' => 'respondeSolicitacaoAluguel', 'uses' => 'ControllerAssociacao@setRespostaSolicitacao']);
+        Route::get(
+                '/equipamento',
+                ['as' => 'cadastroEquipamento', 'uses' => 'ControllerAssociacao@getViewCadastroEquipamento']);
         
     });
 

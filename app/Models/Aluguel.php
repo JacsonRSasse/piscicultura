@@ -10,7 +10,9 @@ class Aluguel extends Model {
     const STATUS_ABERTO_SOLICITACAO = 1;
     const STATUS_EM_ANDAMENTO = 2;
     const STATUS_NA_FILA = 3;
-    const STATUS_FINALIZADO = 4;
+    const STATUS_DEFERIDO = 4;
+    const STATUS_INDEFERIDO = 5;
+    const STATUS_FINALIZADO = 6;
     
     protected $table = 'tbaluguel';
     protected $primaryKey = 'alunumero';
@@ -25,6 +27,8 @@ class Aluguel extends Model {
             self::STATUS_ABERTO_SOLICITACAO => 'Solicitação Aberta',
             self::STATUS_EM_ANDAMENTO       => 'Em Andamento',
             self::STATUS_NA_FILA            => 'Aguardando na Fila',
+            self::STATUS_DEFERIDO           => 'Deferido',
+            self::STATUS_INDEFERIDO         => 'Indeferido',
             self::STATUS_FINALIZADO         => 'Finalizado'
         ];
     }

@@ -93,10 +93,9 @@ class ControllerProdutor extends ControllerItemMenuProdutor {
         return $oEquipamento->isAlugado();
     }
     
-    private function verificaQuantidadeDisponivel($iQtdeCarrinho, $sChave){
-        $aChave = explode('_', $sChave);
-        $oEquipamento = Equipamento::find($aChave[1]);
-        return $oEquipamento->getQuantidade() > $iQtdeCarrinho;
+    private function verificaQuantidadeDisponivel($iQtdeCarrinho, $iChave){
+        $oEquipamento = Equipamento::find($iChave);
+        return $oEquipamento->eqpquantidade > $iQtdeCarrinho;
     }
         
     public function getViewCarrinhoEquipamentos($bInseriuAluguel = null){
